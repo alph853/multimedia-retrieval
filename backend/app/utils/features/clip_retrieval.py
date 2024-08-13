@@ -2,7 +2,7 @@ import os
 import faiss
 from timeit import default_timer as timer
 
-from .models import PROJECT_ROOT
+from .models.project_root import PROJECT_ROOT
 import json
 import torch
 import clip
@@ -11,26 +11,29 @@ from PIL import Image
 
 
 class ClipRetrieval:
-    """Returns top k most similar results to the queries.
-        Types of queries are: txt, img, reconstruct ids. Must provide at least one query type.
-        IMPORTANT: TO CHANGE THE ACTIVE MODEL, CALL reload_model(model_key) BEFOREHAND.
+    """
+    Find top k most similar results to the provided queries.
 
-        Args:
-            txt_query (list[str] | None, optional): shape (n_txt_query, )
-            img_query (PIL.Image.Image | None, optional): image must be resized beforehand
-            reconstruct_ids (optional): An iterable of ids to reconstruct
+    Types of queries supported: text, image, and reconstruction IDs. At least one query type must be provided.
 
-        Raises:
-            ValueError: If none of the query types are provided.
+    To change the active model, call `reload_model(model_key)`.
+    
+    Raises:
+        ValueError: If all query types are None.
 
-        Returns:
-            dict: A dictionary with keys 'txt', 'img', 'recon' and values 'scores' and 'indices' with shape (n_query, k).
+    Args:
+        query (dict) : A dictionary with keys 'txt', 'img', 'recon', and values shape `(n_query, )` for each query types. 
+
+    Returns:
+        result (dict): A dictionary with keys `'txt'`, `'img'`, and `'recon'`, and values `('scores' and 'indices')` each. 
     """
 
     def __init__(
         self,
         clip_model_info: str = os.path.join(PROJECT_ROOT, "dict/clip/clip_model_info.json"),
     ):
+        self.query_types = ['txt', 'img', 'recon']
+
         self.model_info = json.load(clip_model_info)
         self.model_keys = sorted(self.model_info.keys())
         self.active_model = self.model_keys[0]
@@ -42,37 +45,33 @@ class ClipRetrieval:
 
     def __call__(
         self,
-        txt_query: list[str] | None = None,
-        img_query: Image.Image | None = None,
-        reconstruct_ids=None,
+        query: dict[str: list[str] | Image.Image | list[int] | None],
         k: int = 100,
     ):
-        if txt_query is None and img_query is None and reconstruct_ids is None:
-            raise ValueError("Either txt_query or img_query or reconstruct_ids should be provided.")
+        if all(q is None for q in query.values()):
+            raise ValueError("At least one query type must be provided.")
 
         query_types = {
-            'txt': (txt_query, self.encode_text),
-            'img': (img_query, self.encode_image),
-            'recon': (reconstruct_ids, self.reconstruct)
+            'txt': (query['txt'], self.encode_text),
+            'img': (query['img'], self.encode_image),
+            'idx': (query['idx'], self.reconstruct)
         }
 
         features = []
-        for _, (query, encode) in query_types.items():
-            if query is not None:
-                features.append(encode(query))
+        for _, (q, encode) in query_types.items():
+            if q is not None:
+                query_features = encode(q)
+                features.append(query_features)
 
         query = torch.cat(features, dim=0)
         scores, indices = self.search(query, k)
         # shape (n_txt_query + 1(Image) + len(reconstruct_ids), k)
         results = {}
         start_idx = 0
-        for key, (query, _) in query_types.items():
-            if query is not None:
-                end_idx = start_idx + (len(query) if key != 'img' else 1)
-                results[key] = {
-                    'scores': scores[start_idx:end_idx],
-                    'indices': indices[start_idx:end_idx]
-                }
+        for key, (q, _) in query_types.items():
+            if q is not None:
+                end_idx = start_idx + (len(q) if key != 'img' else 1)
+                results[key] = (scores[start_idx:end_idx], indices[start_idx:end_idx])
                 start_idx = end_idx
 
         return results

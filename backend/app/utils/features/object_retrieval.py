@@ -6,18 +6,20 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from timeit import default_timer as timer
 import faiss
 from .models import PROJECT_ROOT
+from .utils import merge_list_results
 
 
 class ObjectRetrieval:
     """
-    Search for the top k most similar results to the query.
-
+    Find top k most similar results to the query.
+    
+    Types of queries supported: bbox, class, tag, number, and color.
     Args:
-        query (dict): A dictionary with keys 'types' and value (n_query, ).
+        query (dict): A dictionary with keys 'types' and values (n_query,).
         k (int): The number of top similar results to retrieve.
 
     Returns:
-        result (dict): keys 'types' and values ('scores' and 'indices') with shape (n_query, k)} .
+        result (dict): A dictionary with keys 'types' and values ('scores' and 'indices') with shape (n_query, k).
     """
 
     def __init__(
@@ -39,15 +41,15 @@ class ObjectRetrieval:
 
         if context_paths is None:
             self.context_paths = {
-                type: f"dict/obd/context/{type}_encoded.npz" for type in sparse_context_types
+                type: f"dict/obj/context/{type}_encoded.npz" for type in sparse_context_types
             }
             self.context_paths.update({
-                type: f"dict/obd/context/{type}_encoded.bin" for type in dense_context_types
+                type: f"dict/obj/context/{type}_encoded.bin" for type in dense_context_types
             })
 
         if tfidf_transform_paths is None:
             self.tfidf_transform_paths = {
-                type: f"dict/obd/transform/{type}_tdidf_transform.pkl".format(type) for type in self.all_context_types
+                type: f"dict/obj/transform/{type}_tdidf_transform.pkl".format(type) for type in self.all_context_types
             }
         # type, path
         for t, p in self.context_paths.items():
@@ -70,7 +72,7 @@ class ObjectRetrieval:
             scores_all_types.append(scores)
             indices_all_types.append(top_k_indices)
 
-        results = {t: (scores, indices) for t, scores, indices in zip(types, scores_all_types, indices_all_types)}
+        results = merge_list_results(scores_all_types, indices_all_types, k)
         return results
 
     def search(self, query: list[str], k: int, type: str):

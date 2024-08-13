@@ -6,8 +6,10 @@ from typing import List, Dict
 from PIL import Image
 import io
 
-from utils.retrieval_engine import MyFaiss
+from utils.retrieval_engine import RetrievalEngine, Assistant
 
+retreival_engine = RetrievalEngine()
+assistant = Assistant()
 
 app = FastAPI()
 
@@ -18,7 +20,7 @@ class Query(BaseModel):
 
     img_query: UploadFile = File(...)
     txt_query: List[str]
-    obd_query: Dict
+    obj_query: Dict
     ocr_query: List[str]
     tag_query: List[str]
     asr_query: List[str] | None = None
@@ -47,10 +49,10 @@ async def filter():
     pass
 
 
-@app.GET("/assistant/{type: str}")  # type: tag, prompt
-async def get_assistant():
+@app.GET("/assistant")
+async def get_assistant(type: str, query: str):
     if type == "tag":
-        pass
+        return assistant.tag_assistant(query)
     elif type == "prompt":
         pass
     else:

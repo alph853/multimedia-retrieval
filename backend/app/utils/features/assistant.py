@@ -1,7 +1,7 @@
 import os
 import torch
 from sentence_transformers import SentenceTransformer, util
-from .models import PROJECT_ROOT, sentence_transformer_model
+from .models import PROJECT_ROOT, sentence_transformer_model, spacy_model
 import numpy as np
 
 
@@ -11,20 +11,24 @@ class TagAssistant:
         tag_corpus_path=os.path.join(PROJECT_ROOT, "dict/tag/tag_corpus.txt"),
     ):
         self.model = sentence_transformer_model
+        self.spacy = spacy_model
         self.tag_corpus_path = tag_corpus_path
-        self.tag_corpus = self.generate_raw_data(tag_corpus_path)
+        self.tag_corpus = self.get_tag_corpus(tag_corpus_path)
         self.tag_embeddings = self.model.encode(self.tag_corpus)
 
-    def __call__(self, query: list[str], k=10):
+    def __call__(self, query: list[str] | str, k=10):
         """Return the tags similar to the query
 
         Args:
-            query (str): input query
+            query (str): input query 
             top_k (int, optional): top k tags. Defaults to 10.
 
         Returns:
-            tuple: scores (numpy), tags (list[str]) shape (n_query, k)
+            Tuple: scores (numpy), tags (list[str]) shape (n_query, k)
         """
+        if isinstance(query, str):
+            query, _ = spacy_model(query)
+
         k = max(1, min(k, len(self.tag_corpus)))
 
         query_embed = self.model.encode(query)
@@ -32,13 +36,20 @@ class TagAssistant:
         top_k_indices = np.argsort(scores, axis=1)[:, ::-1][:, :k]
         scores = np.take_along_axis(scores, top_k_indices, axis=1)
 
-        tags = []
-        for idx in top_k_indices:
-            tags.append([self.tag_corpus[i] for i in idx])
-        return scores, tags
+        tags = {}
+        for idx, score in zip(top_k_indices, scores):
+            for i, s in zip(idx, score):
+                if s < 0.55:
+                    continue
+                tags[self.tag_corpus[i]] = s
+
+        tags_list = sorted(tags.items(), key=lambda x: x[1], reverse=True)
+        print(tags_list)
+        return tags_list
+
 
     @staticmethod
-    def generate_raw_data(context_path):
+    def get_tag_corpus(context_path):
         raw_data = []
         with open(context_path, 'r', encoding='utf-8') as f:
             raw_data = f.readlines()
@@ -50,13 +61,13 @@ class PromptAssistant:
     pass
 
 
-tag_retrieve = TagAssistant()
+# tag_retrieve = TagAssistant()
 
-if __name__ == '__main__':
-    while True:
-        q = input("Enter query: ")
-        if q == 'exit':
-            break
-        else:
-            print(tag_retrieve(q, 10))
-            print()
+# if __name__ == '__main__':
+#     while True:
+#         q = input("Enter query: ")
+#         if q == 'exit':
+#             break
+#         else:
+#             print(tag_retrieve(q, 10))
+#             print()
