@@ -34,7 +34,7 @@ def merge_list_results(list_scores, list_indices, k):
                 result_dict[idx] += F(rank_dict[idx], central, score)
     # Convert result_dict to sorted arrays
     idx_image, scores = zip(*sorted(result_dict.items(), key=lambda x: x[1], reverse=True))
-    return scores, idx_image
+    return scores[:k], idx_image[:k]
 
 
 # s_final^i
@@ -66,7 +66,8 @@ def calculate_final_score(methods_type, d, s_i, s_j):
 
 def merge_results_all_frames(all_frames_results, frame_numbers, k, method_type=0):
     _all_frames_results = copy.deepcopy(all_frames_results)
-    all_frames_scores = {}
+    all_frames_scores = {idx: score for score, idx in zip(*_all_frames_results[frame_numbers])}
+
     for frame_id in range(frame_numbers, 1, -1):
         s__j, idx__j = _all_frames_results[frame_id]
         s__i, idx__i = _all_frames_results[frame_id - 1]
@@ -82,4 +83,4 @@ def merge_results_all_frames(all_frames_results, frame_numbers, k, method_type=0
 
         _all_frames_results[frame_id] = (s_i_final, idx__i)
     idx, scores = zip(*sorted(all_frames_scores.items(), key=lambda x: x[1], reverse=True))
-    return scores, idx
+    return scores[:k], idx[:k]

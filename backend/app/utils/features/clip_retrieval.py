@@ -2,7 +2,7 @@ import os
 import faiss
 from timeit import default_timer as timer
 
-from .models.project_root import PROJECT_ROOT
+from models import PROJECT_ROOT, translator
 import json
 import torch
 import clip
@@ -39,6 +39,7 @@ class ClipRetrieval:
         self.active_model = self.model_keys[0]
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.translator = translator
 
         self.faiss_index = self.read_index_gpu(self.active_model)
         self.clip_model, self.clip_tokenizer, self.clip_preprocess = self.load_clip(self.active_model)
@@ -50,6 +51,8 @@ class ClipRetrieval:
     ):
         if all(q is None for q in query.values()):
             raise ValueError("At least one query type must be provided.")
+
+        query['txt'] = [self.translator(q) for q in query['txt']] if query['txt'] is not None else None
 
         query_types = {
             'txt': (query['txt'], self.encode_text),

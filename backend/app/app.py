@@ -2,28 +2,25 @@ from fastapi import FastAPI, HTTPException, Request, File, UploadFile
 from pydantic import BaseModel
 
 import numpy as np
-from typing import List, Dict
+from typing import List, Dict, Any
 from PIL import Image
 import io
 
-from utils.retrieval_engine import RetrievalEngine, Assistant
+from utils import (RetrievalEngine, Assistant,
+                   validate_request, parse_object_retrieval_request
+                   )
 
-retreival_engine = RetrievalEngine()
+retrieval_engine = RetrievalEngine()
 assistant = Assistant()
 
 app = FastAPI()
 
 
 class Query(BaseModel):
-    search_space_idx: str
+    search_space_idx: List[int]
     number: int
-
-    img_query: UploadFile = File(...)
-    txt_query: List[str]
-    obj_query: Dict
-    ocr_query: List[str]
-    tag_query: List[str]
-    asr_query: List[str] | None = None
+    number_of_frames: int
+    frame_info: Dict[int, Dict[str, str | File | List[str] | None]]
 
 
 class Feedback(Query):
@@ -34,9 +31,15 @@ class Feedback(Query):
 
 @app.POST("/search")
 async def search(q: Query):
-    img_bytes = await q.img_query.read()
-    img_query = Image.open(io.BytesIO(img_bytes))
-    pass
+    if not validate_request(q):
+        raise HTTPException(status_code=400, detail="Invalid request")
+
+    frame_info = {int(k): v for k, v in q.frame_info.items()}
+    frame_info = parse_object_retrieval_request(frame_info)
+    frame_number = q.number_of_frames
+    k = q.number
+
+    return retrieval_engine(frame_number, frame_info, k)
 
 
 @app.POST("/feedback")
