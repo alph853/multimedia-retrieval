@@ -1,0 +1,53 @@
+.model{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 10px;
+    
+}
+.model p{
+    margin: 0px;
+    font-weight: 500;
+}
+.model input[type="radio"]{
+     -webkit-appearance: none; /* Safari and Chrome */
+    -moz-appearance: none; /* Firefox */
+    appearance: none; /* Modern browsers */
+    width: 20px;
+    height: 20px;
+    border: 2px solid black;
+    border-radius: 4px; /* Optional: Add rounded corners */
+    cursor: pointer;
+    position: relative;
+    top: 5px;
+}
+
+
+.whole{
+    display: flex;
+    gap: 20px;
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.btn button{
+    padding: 7px;
+    width: 76px;
+    border-radius: 5px;
+    border: none;
+    background-color: black;
+    color: white;
+    font-weight: 600;
+    height: 38px;
+}
+
+.numberInput{
+    font-weight:500;
+}
+.numberInput input{
+    width: 51px;
+    height: 17px;
+    border-radius: 5px;
+    margin-left: 5px;
+}

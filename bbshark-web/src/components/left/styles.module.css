@@ -1,0 +1,31 @@
+.modelContainer{
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.input{
+    height: 350px;
+    overflow: scroll;
+    padding: 5px;
+}
+
+.input::-webkit-scrollbar {
+    width: 10px;
+    height: 5px;
+}
+.input::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.input::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 6px;
+}
+.input::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    border-radius: 6px;
+}
+.input::-webkit-scrollbar-horizontal {
+    display: none;
+}

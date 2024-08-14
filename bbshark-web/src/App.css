@@ -1,0 +1,44 @@
+:root{
+  --primary-color-dark: #274C6B;
+  --primary-color-light: #6B86A0;
+  --important: #EF4B4B;
+  --background: #E8E8E8;
+  --background-input: #D2D2D2;
+  --text-input: #777676;
+}
+
+
+
+.app{
+  background-color: rgba(242, 251, 254, 0.8);
+  margin: 20px;
+  border-radius: 5px;
+  padding: 0px 10px;
+  height: 100%;
+  font-size: 15px;
+}
+
+.drawing-board-enter {
+  opacity: 0;
+  transform: translateY(-20px); /* Adjust the value as needed */
+}
+
+/* Transition to visible state */
+.drawing-board-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms; /* Adjust duration as needed */
+}
+
+/* Transition to hidden state */
+.drawing-board-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Transition to final hidden state */
+.drawing-board-exit-active {
+  opacity: 0;
+  transform: translateY(-20px); /* Adjust the value as needed */
+  transition: opacity 300ms, transform 300ms; /* Adjust duration as needed */
+}
