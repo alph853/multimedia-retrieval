@@ -1,2 +1,2 @@
 from .retrieval_engine import RetrievalEngine, Assistant
-from .handle_request import validate_request, parse_object_retrieval_request
+from .request_util import check_invalid_request, parse_object_retrieval_request

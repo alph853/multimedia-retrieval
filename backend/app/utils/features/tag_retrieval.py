@@ -7,7 +7,7 @@ import numpy as np
 
 
 class TagRetrieval:
-    def __init__(self, tags_path="dict/tag/tags_encoded.npz", tfidf_transformer_path="dict/tags/tags_tfidf_transform.pkl"):
+    def __init__(self, tags_path="dict/tag/tag_encoded.npz", tfidf_transformer_path="dict/tag/tag_tfidf_transform.pkl"):
         self.tag_paths = tags_path
         self.tfidf_transformer_path = tfidf_transformer_path
 
@@ -15,8 +15,11 @@ class TagRetrieval:
         with open(os.path.join(PROJECT_ROOT, tfidf_transformer_path), 'rb') as f:
             self.tfidf_transformer = pickle.load(f)
 
-    def __call__(self, query: list[str], k: int):
-        query_vector = self.encode(query)
+    def __call__(self, q: list[str], k: int):
+
+        query = preprocess(q)
+
+        query_vector = encode(query, self.tfidf_transformer)
 
         scores = self.tags_matrix.dot(query_vector.T).toarray()
         top_k_indices = np.argsort(scores, axis=1)[:, ::-1][:, :k]
@@ -24,11 +27,13 @@ class TagRetrieval:
 
         return scores, top_k_indices
 
-    @staticmethod
-    def encode(query: list[str], transform: TfidfVectorizer):
-        return transform.transform(query)
 
-    @staticmethod
-    def preprocess(query: str):
-        query = query.lower()
-        return query
+def preprocess(query: list[str]):
+    for i, tag_query in enumerate(query):
+        if isinstance(tag_query, list):
+            query[i] = ' '.join(tag_query).lower()
+    return query
+
+
+def encode(query: list[str], transform: TfidfVectorizer):
+    return transform.transform(query)

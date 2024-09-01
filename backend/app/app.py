@@ -1,3 +1,5 @@
+import json
+import asyncio
 from fastapi import FastAPI, HTTPException, Request, File, UploadFile
 from pydantic import BaseModel
 
@@ -7,20 +9,30 @@ from PIL import Image
 import io
 
 from utils import (RetrievalEngine, Assistant,
-                   validate_request, parse_object_retrieval_request
+                   check_invalid_request, parse_object_retrieval_request
                    )
 
 retrieval_engine = RetrievalEngine()
-assistant = Assistant()
+# assistant = Assistant()
 
 app = FastAPI()
+
+
+class FrameInfo(BaseModel):
+    txt: str | None = None
+    img: UploadFile | None = None
+    ocr: str | None = None
+    idx: List[int] | None = None
+    tag: List[str] | None = None
+    asr: str | None = None
+    obj: Dict[str, Any] | None = None
 
 
 class Query(BaseModel):
     search_space_idx: List[int]
     number: int
     number_of_frames: int
-    frame_info: Dict[int, Dict[str, str | File | List[str] | None]]
+    frame_info: Dict[int, FrameInfo]
 
 
 class Feedback(Query):
@@ -29,34 +41,43 @@ class Feedback(Query):
     neg_idx: list
 
 
-@app.POST("/search")
+@app.post("/search")
 async def search(q: Query):
-    if not validate_request(q):
-        raise HTTPException(status_code=400, detail="Invalid request")
+    if detail := check_invalid_request(q) is not None:
+        raise HTTPException(status_code=400, detail=detail)
 
-    frame_info = {int(k): v for k, v in q.frame_info.items()}
-    frame_info = parse_object_retrieval_request(frame_info)
+    print("User query: \n", json.dumps(q.model_dump(), indent=2))
+
+    frame_info = parse_object_retrieval_request(q.frame_info)
     frame_number = q.number_of_frames
     k = q.number
 
     return retrieval_engine(frame_number, frame_info, k)
 
 
-@app.POST("/feedback")
+@app.post("/feedback")
 async def feedback(feedback: Feedback):
     pass
 
 
-@app.POST('/filter')
+@app.post('/filter')
 async def filter():
     pass
 
 
-@app.GET("/assistant")
-async def get_assistant(type: str, query: str):
-    if type == "tag":
-        return assistant.tag_assistant(query)
-    elif type == "prompt":
-        pass
-    else:
-        raise HTTPException(status_code=404, detail="Type not found")
+# @app.get("/assistant")
+# async def get_assistant(type: str, query: str):
+#     if type == "tag":
+#         return assistant.tag_assistant(query)
+#     elif type == "prompt":
+#         pass
+#     else:
+#         raise HTTPException(status_code=404, detail="Assistant not found")
+
+
+while True:
+    query = json.load(open(f'app/example.json'))
+    result = asyncio.run(search(Query(**query)))
+    s = input("Enter to continue, q or CTRL+C to quit: ")
+    if s == 'q':
+        break

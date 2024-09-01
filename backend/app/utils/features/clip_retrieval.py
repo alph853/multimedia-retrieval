@@ -2,7 +2,9 @@ import os
 import faiss
 from timeit import default_timer as timer
 
-from models import PROJECT_ROOT, translator
+import numpy as np
+
+from .models import PROJECT_ROOT, translator
 import json
 import torch
 import clip
@@ -32,17 +34,15 @@ class ClipRetrieval:
         self,
         clip_model_info: str = os.path.join(PROJECT_ROOT, "dict/clip/clip_model_info.json"),
     ):
-        self.query_types = ['txt', 'img', 'recon']
-
-        self.model_info = json.load(clip_model_info)
+        self.model_info = json.load(open(clip_model_info, 'r'))
         self.model_keys = sorted(self.model_info.keys())
-        self.active_model = self.model_keys[0]
+        self.active_model = self.model_keys[2]
 
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.translator = translator
 
         self.faiss_index = self.read_index_gpu(self.active_model)
-        self.clip_model, self.clip_tokenizer, self.clip_preprocess = self.load_clip(self.active_model)
+        self.clip_model, self.clip_tokenizer, self.clip_preprocess = self.load_clip(self.model_info[self.active_model])
 
     def __call__(
         self,
@@ -61,13 +61,16 @@ class ClipRetrieval:
         }
 
         features = []
-        for _, (q, encode) in query_types.items():
+        for _, (q, encoder) in query_types.items():
             if q is not None:
-                query_features = encode(q)
+                query_features = encoder(q)
+                query_features /= query_features.norm(dim=-1, keepdim=True)
                 features.append(query_features)
 
-        query = torch.cat(features, dim=0)
-        scores, indices = self.search(query, k)
+        features = torch.cat(features, dim=0)
+        features = features.cpu().detach().numpy().astype(np.float32)
+
+        scores, indices = self.search(features, k)
         # shape (n_txt_query + 1(Image) + len(reconstruct_ids), k)
         results = {}
         start_idx = 0
@@ -80,7 +83,7 @@ class ClipRetrieval:
         return results
 
     def encode_text(self, txt_query: list[str]):
-        query = self.clip_tokenizer(txt_query, return_tensors="pt").to(self.device)
+        query = self.clip_tokenizer(txt_query).to(self.device)
         txt_features = self.clip_model.encode_text(query)
         txt_features /= txt_features.norm(dim=-1, keepdim=True)
 
@@ -102,7 +105,7 @@ class ClipRetrieval:
         recon_tensor = torch.tensor(recon_vectors).to(self.device)
         return recon_tensor
 
-    def search(self, query: torch.Tensor, k: int):
+    def search(self, query: np.ndarray, k: int):
         '''Search for similarity between query and indexed CLIP features.
         Params:
             query: shape (n_query, d)
@@ -119,26 +122,30 @@ class ClipRetrieval:
 
         self.active_model = model_key
         self.faiss_index = self.read_index_gpu(self.active_model)
-        self.clip_model, self.clip_tokenizer, self.clip_preprocess = self.load_clip(self.active_model)
 
-    def load_clip(self, model_key):
         model_info = self.model_info[model_key]
+        self.clip_model, self.clip_tokenizer, self.clip_preprocess = self.load_clip(model_info, device=self.device)
+
+    @staticmethod
+    def load_clip(model_info, device="cuda"):
         model = model_info['model']
-        pretrained = model_info['pretrained']
+
+        print(f"Loading model: {json.dumps(model_info, indent=2)}")
 
         if model_info['version'] == "openclip":
+            pretrained = model_info['pretrained']
             clip_model, _, clip_preprocess = open_clip.create_model_and_transforms(
-                model, device=self.device, pretrained=pretrained)
+                model, device=device, pretrained=pretrained)
             clip_tokenizer = open_clip.get_tokenizer(model)
         else:
-            clip_model, clip_preprocess = clip.load(model, device=self.device)
+            clip_model, clip_preprocess = clip.load(model, device=device)
             clip_tokenizer = clip.tokenize
 
         return clip_model, clip_tokenizer, clip_preprocess
 
     @staticmethod
     def read_index_gpu(model_key):
-        model_path = os.path.join(PROJECT_ROOT, "dict/faiss_clip_index", f'{model_key}.bin')
+        model_path = os.path.join(PROJECT_ROOT, "dict/clip", f'{model_key}.bin')
         res = faiss.StandardGpuResources()
         index = faiss.read_index(model_path)
         index_gpu = faiss.index_cpu_to_gpu(res, 0, index)

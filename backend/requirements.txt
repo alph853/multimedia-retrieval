@@ -1,15 +1,10 @@
 pyvi
 ftfy
 tqdm
-flask
 regex
 numpy
-pandas
-faiss-cpu
-clip
 rapidfuzz
 matplotlib
-flask-cors
 opencv-python
 langdetect==1.0.9
 googletrans==3.1.0a0
@@ -17,3 +12,5 @@ sentence_transformers
 transformers
 scikit-learn
 open_clip_torch
+spacy
+fastapi

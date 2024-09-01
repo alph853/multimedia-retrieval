@@ -49,7 +49,7 @@ class ObjectRetrieval:
 
         if tfidf_transform_paths is None:
             self.tfidf_transform_paths = {
-                type: f"dict/obj/transform/{type}_tdidf_transform.pkl".format(type) for type in self.all_context_types
+                type: f"dict/obj/transform/{type}_tdidf_transform.pkl" for type in self.all_context_types
             }
         # type, path
         for t, p in self.context_paths.items():

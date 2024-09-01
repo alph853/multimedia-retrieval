@@ -5,4 +5,4 @@ from .object_retrieval import ObjectRetrieval
 from .ocr_retrieval import OcrRetrieval
 from .speech_retrieval import SpeechRetrieval
 from .tag_retrieval import TagRetrieval
-from .utils import merge_list_results, merge_results_all_frames
+from .utils import merge_list_results
