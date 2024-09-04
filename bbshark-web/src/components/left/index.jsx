@@ -30,29 +30,53 @@ export default function Left() {
     setSelectedFrame,
     searchResponse,
     setSearchResponse,
+    numImg,
+    canvasW,
+    canvasH
   } = useContext(GlobalContext)
   function handleDeleteFrame() {
     setInputBox((i) => (i = inputBox.filter((_, idx) => idx !== selectedFrame)))
     setSelectedFrame(0)
   }
   const handleSearchBE = () => {
-    const img_query = inputBox.map((item) => item.data.img_path)
-    const text_query = inputBox.map((item) => item.data.text)
-    const obd_query = [""]
-    const ocr_query = [""]
-    const tag_query = [""]
-
+      const obj = {}
+      inputBox.forEach((input,index)=>{
+        const key = (index+1).toString();
+         const { text, img_path, tag } = input.data;
+        obj[key] = {
+          txt:text,
+          img:img_path,
+          ocr:null,
+          idx:[],
+          tag:tag,
+          asr:null,
+          obj:{
+            "canvasSize":{"h":canvasH,"w":canvasW},
+            "dragObject":input.data.drawImg.map(obj=>{
+              return {
+                class: obj.imageName,
+                position: {
+                  xTop: obj.x,
+                  xBottom: obj.x + obj.width,
+                  yTop: obj.y,
+                  yBottom: obj.y + obj.height
+                }
+              }
+            }),
+            "drawColor":[]
+          }
+        }
+      })
+      console.log(obj);
     axios
       .post("http://localhost:5173/search", {
-        search_space_idx: "",
-        number: 0,
-        img_query,
-        text_query,
-        obd_query,
-        ocr_query,
-        tag_query,
+        number:numImg,
+        search_space_idx:[], 
+        number_of_frames:inputBox.length,
+        frame_info:obj,
       })
       .then((res) => setSearchResponse((s) => (s = res)))
+    console.log(searchResponse);
   }
   return (
     <div style={{ flex: "0 0 26%", marginLeft: "25px" }}>

@@ -21,6 +21,7 @@ export default function GlobalState({ children }) {
       data: {
         text: "",
         img_path: "",
+        drawImg:[],
         tag: [],
       },
     },
@@ -29,6 +30,9 @@ export default function GlobalState({ children }) {
   const [searchResponse, setSearchResponse] = useState([])
   const [selectedFrame, setSelectedFrame] = useState(0)
   const [selectedImage, setSelectedImage] = useState(null)
+  const [numImg,setNumImg] =  useState(0);
+  const [canvasH,setCanvasH] = useState(0);
+  const [canvasW,setCanvasW] = useState(0);
   function handleClick(event) {
     const value = event.currentTarget.getAttribute("data-value")
     if (
@@ -73,6 +77,12 @@ export default function GlobalState({ children }) {
         setSearchResponse,
         selectedImage,
         setSelectedImage,
+        numImg,
+        setNumImg,
+        canvasH,
+        canvasW,
+        setCanvasH,
+        setCanvasW
       }}
     >
       {children}

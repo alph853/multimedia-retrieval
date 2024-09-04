@@ -1,6 +1,10 @@
+import { useContext } from 'react'
 import classes from './styles.module.css'
+import { GlobalContext } from '../../../context'
 
 export default function ModelSelection() {
+  const {numImg,setNumImg} = useContext(GlobalContext);
+
   return (
     <div className={classes.whole}>
       <div>
@@ -21,7 +25,7 @@ export default function ModelSelection() {
         <p className={classes.numberInput}>
           Number{" "}
           <span>
-            <input type="number" name="model-input" onChange={() => {}}></input>
+            <input type="number" name="model-input" onChange={e =>{setNumImg(e.target.value);console.log(numImg)}}></input>
           </span>
         </p>
       </div>
