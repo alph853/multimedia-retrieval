@@ -1,0 +1,30 @@
+.imageContainer{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:20px;
+    height: 400px;
+    overflow: scroll;
+    padding: 20px;
+    padding-top: 0;
+    margin-top: 20px;
+}
+
+.imageContainer::-webkit-scrollbar {
+    width: 10px;
+    height: 5px;
+}
+.imageContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.imageContainer::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 6px;
+}
+.imageContainer::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    border-radius: 6px;
+}
+.imageContainer::-webkit-scrollbar-horizontal {
+    display: none;
+}

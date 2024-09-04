@@ -1,0 +1,85 @@
+.drawing{
+    border: 1px solid gray;
+    border-radius: 15px;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: gray;
+    display: flex;
+}
+.canvas{
+    flex: 0 0 60%;
+    background-color:white;
+    border-radius: 15px;
+    box-shadow: 0 4px 0 0 #222;
+    background-color: white;
+    width: 200px;
+    height: 150px;
+    padding: 10px;
+}
+
+
+
+
+.color button{
+
+    margin-left: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    border: none;
+    font-weight: 600;
+    padding: 5px 10px;
+    cursor: pointer;
+    
+}
+.exitBtn{
+    background-color: red;
+}
+.color ul li{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.scrollContainer {
+  overflow: hidden;
+}
+
+.scrollText {
+  /* animation properties */
+  -moz-transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+  transform: translateX(100%);
+  
+  -moz-animation: my-animation 8s linear infinite;
+  -webkit-animation: my-animation 8s linear infinite;
+  animation: my-animation 8s linear infinite;
+}
+
+/* for Firefox */
+@-moz-keyframes my-animation {
+  from { -moz-transform: translateX(100%); }
+  to { -moz-transform: translateX(-100%); }
+}
+
+/* for Chrome */
+@-webkit-keyframes my-animation {
+  from { -webkit-transform: translateX(100%); }
+  to { -webkit-transform: translateX(-100%); }
+}
+
+@keyframes my-animation {
+  from {
+    -moz-transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+  }
+  to {
+    -moz-transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+  }
+}

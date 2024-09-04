@@ -1,0 +1,52 @@
+
+
+.input{
+    height: 330px;
+    overflow: scroll;
+    padding: 5px;
+}
+
+.input::-webkit-scrollbar {
+    width: 10px;
+    height: 5px;
+}
+.input::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.input::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 6px;
+}
+.input::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    border-radius: 6px;
+}
+.input::-webkit-scrollbar-horizontal {
+    display: none;
+}
+
+.btn{
+    background-color: #95a5a6;
+    border: none;
+    border-radius: 5px;
+    padding: 4px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 5px;
+}
+.selected{
+    background-color: white;
+}
+
+.submitBtn{
+    margin-right: 20px;
+    border: none;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    padding: 5px 15px;
+    border-radius:5px ;
+    cursor: pointer;
+
+}
