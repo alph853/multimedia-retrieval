@@ -21,9 +21,9 @@ conda install -c pytorch/label/nightly -c nvidia faiss-gpu -y
 python -m spacy download en
 ```
 
-Then, you can run just using this command:
+Then go to `app` directory, you can run just using this command:
 
-`python app/app.py`
+`fastapi dev app.py`
 
 which stores results in /backend/app/result.json
 

@@ -49,15 +49,17 @@ class RetrievalEngine:
                 }
                 (p1, p2, etc are image paths)
     """
-    def __init__(self, id2img_fps='dict/id2img_fps.json'):
+
+    def __init__(self, id2img_fps='dict/id2img_fps.json', metadata_path='dict/video_metadata.json'):
         self.feature_retrievers = {
             'clip': ClipRetrieval(),
-            # 'ocr': OcrRetrieval(),
+            'ocr': OcrRetrieval(),
             'tag': TagRetrieval(),
             # 'obj': ObjectRetrieval(),
             # 'asr': SpeechRetrieval(),
         }
         self.prev_results = {}
+        self.video_metadata = json.load(open(os.path.join(PROJECT_ROOT, metadata_path), 'r', encoding='utf-8'))
         self.id2img_fps = load_json_int_key(os.path.join(PROJECT_ROOT, id2img_fps))
         self.features = self.feature_retrievers.keys()
         self.query_types = ['txt', 'img', 'idx', 'tag', 'ocr', 'obj', 'asr']
@@ -74,7 +76,8 @@ class RetrievalEngine:
 
         self.prev_results = all_frames_results
 
-        return map_ids_to_paths(self.id2img_fps, all_frames_results)
+        results = map_ids_to_paths(self.id2img_fps, all_frames_results, self.video_metadata)
+        return results
 
     def get_retrieval_results(self, query, k):
         results = {}
@@ -85,14 +88,15 @@ class RetrievalEngine:
 
 class Assistant:
     def __init__(self):
-        self.tag_assistant = TagAssistant()
-        self.prompt_assistant = PromptAssistant()
+        self.tag = TagAssistant()
+        self.prompt = PromptAssistant()
 
-    def tag_assistant(self, query: str | list[str]):
-        return self.tag_assistant(query)
+    def tag_assistant(self, query: str | list[str], num_tags: int):
+        print("Get tag assistant. Query: ", query)
+        return self.tag(query)
 
     def prompt_assistant(self, query: str):
-        return self.prompt_assistant(query)
+        return self.prompt(query)
 
 
 def frame_info_to_query(features, frame_info: dict):
@@ -238,7 +242,7 @@ def custom_serializer(obj):
     raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
 
 
-def map_ids_to_paths(id2img_fps: dict, all_frames_results):
+def map_ids_to_paths(id2img_fps: dict, all_frames_results, video_metadata):
     result_paths = {}
     for frame_id in all_frames_results:
         list_scores = all_frames_results[frame_id][0]
@@ -250,9 +254,26 @@ def map_ids_to_paths(id2img_fps: dict, all_frames_results):
             info['score'] = score
             info['frm_id'] = index
 
+            video_key = info['img_path'].split('/')
+            video_key = f'{video_key[1]}_{video_key[2]}'
+            format = f"{video_key}, {info['frm_number']}"
+            fps = video_metadata[video_key]['fps']
+
+            timeframe = (float(info['frm_number']) / (fps*60))
+            minute = int(timeframe)
+            second = int((timeframe - minute)*60)
+            timeframe = f'{minute:02}:{second:02}'
+
+            # info['img_path'] = info['img_path']
+            info['format'] = format
+            info['timeframe'] = timeframe
+            info['publish_date'] = video_metadata[video_key]['publish_date']
+            info['watch_url'] = video_metadata[video_key]['watch_url']
+
         result_paths[frame_id] = infos_query
 
+    result_paths = json.dumps(result_paths, indent=2, default=custom_serializer)
     with open(os.path.join(PROJECT_ROOT, 'result.json'), 'w') as f:
-        f.write(json.dumps(result_paths, indent=2, default=custom_serializer))
+        f.write(result_paths)
 
     return result_paths

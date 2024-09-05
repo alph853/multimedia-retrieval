@@ -14,5 +14,6 @@ class OcrRetrieval:
 
     def __call__(self, query: list[str], k: int = 100):
         query_embed = self.model.encode(query)
+        query_embed = query_embed.cpu().numpy().astype("float32")
         scores, top_k_indices = self.ocr_matrix.search(query_embed, k)
         return scores, top_k_indices

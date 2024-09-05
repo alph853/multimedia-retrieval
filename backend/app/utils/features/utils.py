@@ -14,7 +14,7 @@ def merge_list_results(list_scores, list_indices, k):
 
     def F(rank_list, central, score):
         bonus = sum([central/rank for rank in rank_list])
-        bonus /= (len(rank_list) * central*10)
+        bonus /= (len(rank_list) * central*10 + 1)
         return bonus + score
 
     result_dict = {}

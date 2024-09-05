@@ -1,40 +1,11 @@
 {
-    "number": 200,
+    "number": 100,
     "search_space_idx": [
-        1,
-        2,
-        3,
-        4
     ],
-    "number_of_frames": 3,
+    "number_of_frames": 1,
     "frame_info": {
         "1": {
-            "tag": [
-                "yellow",
-                "stick",
-                "notes",
-                "papers",
-                "wall"
-            ],
-            "txt": "a lot of yellow stick notes and papers are on the wall"
-        },
-        "2": {
-            "txt": "many people on the street taking pictures",
-            "tag": [
-                "people",
-                "street",
-                "taking",
-                "pictures"
-            ]
-        },
-        "3": {
-            "txt": "yellow sticky notes with writing on them",
-            "tag": [
-                "yellow",
-                "sticky",
-                "notes",
-                "writing"
-            ]
+            "txt": "Khung cảnh trong một phòng làm việc, có một cái bàn tròn ở giữa và một cái bàn hình cung tròn bao quanh. Nhiều người đang ngồi làm việc trước các màn hình lớn đặt trên các bàn cung tròn này. Bảng thông tin trên màn hình của một người có chữ \"FLIGHT DYNAMICS\" khi đọc ngược. Tiếp sau đó là cảnh rất nhiều người vỗ tay ăn mừng."
         }
     }
 }

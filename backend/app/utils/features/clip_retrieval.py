@@ -33,15 +33,17 @@ class ClipRetrieval:
     def __init__(
         self,
         clip_model_info: str = os.path.join(PROJECT_ROOT, "dict/clip/clip_model_info.json"),
+        faiss_device: str = "cpu",
     ):
         self.model_info = json.load(open(clip_model_info, 'r'))
         self.model_keys = sorted(self.model_info.keys())
-        self.active_model = self.model_keys[2]
+        self.active_model = self.model_keys[1]
+        self.faiss_device = faiss_device
 
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.translator = translator
 
-        self.faiss_index = self.read_index_gpu(self.active_model)
+        self.faiss_index = self.read_index(self.active_model, faiss_device)
         self.clip_model, self.clip_tokenizer, self.clip_preprocess = self.load_clip(self.model_info[self.active_model])
 
     def __call__(
@@ -53,7 +55,7 @@ class ClipRetrieval:
             raise ValueError("At least one query type must be provided.")
 
         query['txt'] = [self.translator(q) for q in query['txt']] if query['txt'] is not None else None
-
+        print('Translated content: ', query['txt'])
         query_types = {
             'txt': (query['txt'], self.encode_text),
             'img': (query['img'], self.encode_image),
@@ -64,7 +66,6 @@ class ClipRetrieval:
         for _, (q, encoder) in query_types.items():
             if q is not None:
                 query_features = encoder(q)
-                query_features /= query_features.norm(dim=-1, keepdim=True)
                 features.append(query_features)
 
         features = torch.cat(features, dim=0)
@@ -121,10 +122,10 @@ class ClipRetrieval:
             return
 
         self.active_model = model_key
-        self.faiss_index = self.read_index_gpu(self.active_model)
+        self.faiss_index = self.read_index(self.active_model, self.faiss_device)
 
         model_info = self.model_info[model_key]
-        self.clip_model, self.clip_tokenizer, self.clip_preprocess = self.load_clip(model_info, device=self.device)
+        self.clip_model, self.clip_tokenizer, self.clip_preprocess = self.load_clip(model_info)
 
     @staticmethod
     def load_clip(model_info, device="cuda"):
@@ -144,10 +145,14 @@ class ClipRetrieval:
         return clip_model, clip_tokenizer, clip_preprocess
 
     @staticmethod
-    def read_index_gpu(model_key):
+    def read_index(model_key, device):
         model_path = os.path.join(PROJECT_ROOT, "dict/clip", f'{model_key}.bin')
-        res = faiss.StandardGpuResources()
-        index = faiss.read_index(model_path)
-        index_gpu = faiss.index_cpu_to_gpu(res, 0, index)
 
-        return index_gpu
+        if device == 'cuda':
+            res = faiss.StandardGpuResources()
+            index = faiss.read_index(model_path)
+            index = faiss.index_cpu_to_gpu(res, 0, index)
+        else:
+            index = faiss.read_index(model_path)
+
+        return index

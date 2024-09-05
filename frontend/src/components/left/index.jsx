@@ -52,24 +52,23 @@ export default function Left() {
           asr:null,
           obj:{
             "canvasSize":{"h":canvasH,"w":canvasW},
-            "dragObject":input.data.drawImg.map(obj=>{
-              return {
+            "dragObject":input.data.drawImg.map(obj=>({
+
                 class: obj.imageName,
                 position: {
                   xTop: obj.x,
                   xBottom: obj.x + obj.width,
                   yTop: obj.y,
                   yBottom: obj.y + obj.height
-                }
               }
-            }),
+            })),
             "drawColor":[]
           }
         }
       })
       console.log(obj);
     axios
-      .post("http://localhost:5173/search", {
+      .post("http://localhost:8000/search", {
         number:numImg,
         search_space_idx:[], 
         number_of_frames:inputBox.length,

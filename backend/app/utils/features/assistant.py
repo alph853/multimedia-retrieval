@@ -39,21 +39,22 @@ class TagAssistant:
         tags = {}
         for idx, score in zip(top_k_indices, scores):
             for i, s in zip(idx, score):
-                if s < 0.55:
+                if s < 0.5:
                     continue
                 tags[self.tag_corpus[i]] = s
-
         tags_list = sorted(tags.items(), key=lambda x: x[1], reverse=True)
-        print(tags_list)
+        tags_list = [tag for tag, score in tags_list][:k]
         return tags_list
 
 
     @staticmethod
-    def get_tag_corpus(context_path):
+    def get_tag_corpus(tag_corpus_path):
         raw_data = []
-        with open(context_path, 'r', encoding='utf-8') as f:
+        with open(tag_corpus_path, 'r', encoding='utf-8') as f:
             raw_data = f.readlines()
             raw_data = [word.strip() for word in raw_data]
+
+        print(f"Tag corpus loaded: {len(raw_data)} tags")
         return raw_data
 
 

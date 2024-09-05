@@ -10,7 +10,7 @@ def check_invalid_request(q):
     
     if frame_info of some queried frame has no information, decrease number_of_frames by 1 and remove the frame
     """
-    q.frame_info = {int(k): v.model_dump() for k, v in q.frame_info.items()}
+    q.frame_info = {k: v.model_dump() for k, v in q.frame_info.items()}
     frame_info = q.frame_info
 
     if len(frame_info.keys()) != q.number_of_frames:
@@ -20,6 +20,10 @@ def check_invalid_request(q):
     q.number_of_frames = max(min(q.number_of_frames, MAX_NUMBER_OF_FRAMES), 1)
 
     for frame_id in frame_info:
+        if not frame_info[frame_id]['tag']:
+            frame_info[frame_id]['tag'] = None
+        if not frame_info[frame_id]['idx']:
+            frame_info[frame_id]['idx'] = None
         if all(v is None for v in frame_info[frame_id].values()):
             q.number_of_frames -= 1
             del frame_info[frame_id]
