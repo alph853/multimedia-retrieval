@@ -5,7 +5,7 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from timeit import default_timer as timer
 import faiss
-from .models import PROJECT_ROOT
+from .configs import PROJECT_ROOT
 from .utils import merge_list_results
 
 

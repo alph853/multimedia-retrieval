@@ -1,7 +1,7 @@
 import os
 import torch
 from sentence_transformers import SentenceTransformer, util
-from .models import PROJECT_ROOT, sentence_transformer_model, spacy_model
+from .configs import PROJECT_ROOT, sentence_transformer_model, spacy_model
 import numpy as np
 
 

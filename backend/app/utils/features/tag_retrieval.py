@@ -1,4 +1,4 @@
-from .models import PROJECT_ROOT
+from .configs import PROJECT_ROOT
 import scipy as sp
 import os
 import pickle

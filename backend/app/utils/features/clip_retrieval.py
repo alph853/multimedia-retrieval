@@ -4,7 +4,7 @@ from timeit import default_timer as timer
 
 import numpy as np
 
-from .models import PROJECT_ROOT, translator
+from .configs import PROJECT_ROOT, translator
 import json
 import torch
 import clip
