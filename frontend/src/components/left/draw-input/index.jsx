@@ -4,14 +4,14 @@ import { GlobalContext } from "../../../context"
 import MyDropzone from "../drop-file/DropFile";
 
 export default function DrawInput({id}) {
-    const {removeInput,closeBoard, setCloseBoard,files,setFiles} = useContext(GlobalContext);
+    const {removeInput,closeBoard, setCloseBoard,inputBox,selectedFrame} = useContext(GlobalContext);
 
 
   return (
     <div className={classes.drawing}>
       <div className={classes.canvas}>
         <MyDropzone></MyDropzone>
-        {files.length===0?
+        {inputBox[selectedFrame].data.img_path===""?
         <div className={classes.scrollContainer}>
           <p style={{ fontSize: "10px", padding: "10px", marginTop: "20px" }} className={classes.scrollText}>
             * Create your own image by clicking Draw button

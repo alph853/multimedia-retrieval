@@ -14,7 +14,7 @@ export default function GlobalState({ children }) {
     "https://i.pinimg.com/736x/5f/93/73/5f9373cc2e4f4e219612ed4426923116.jpg",
     "https://i.pinimg.com/564x/b3/c2/8a/b3c28a61907847512541ce0983c06217.jpg",
   ])
-  const [files, setFiles] = useState([])
+  
   const [inputBox, setInputBox] = useState([
     {
       render: ["text"],
@@ -58,6 +58,7 @@ export default function GlobalState({ children }) {
     newInputBox[selectedFrame].render = newFrameArray
     setInputBox((i) => (i = newInputBox))
   }
+  // const [files, setFiles] = useState([])
   return (
     <GlobalContext.Provider
       value={{
@@ -69,8 +70,7 @@ export default function GlobalState({ children }) {
         removeInput,
         closeBoard,
         setCloseBoard,
-        files,
-        setFiles,
+        
         selectedFrame,
         setSelectedFrame,
         searchResponse,

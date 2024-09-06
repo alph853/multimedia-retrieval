@@ -42,7 +42,7 @@ export default function Left() {
       const obj = {}
       inputBox.forEach((input,index)=>{
         const key = (index+1).toString();
-         const { text, img_path, tag } = input.data;
+         const { text, img_path, drawImg,tag } = input.data
         obj[key] = {
           txt:text,
           img:img_path,
@@ -52,17 +52,17 @@ export default function Left() {
           asr:null,
           obj:{
             "canvasSize":{"h":canvasH,"w":canvasW},
-            "dragObject":input.data.drawImg.map(obj=>{
-              return {
+            "dragObject":drawImg.map(obj=>({
+               
                 class: obj.imageName,
                 position: {
                   xTop: obj.x,
                   xBottom: obj.x + obj.width,
                   yTop: obj.y,
                   yBottom: obj.y + obj.height
-                }
+                
               }
-            }),
+            })),
             "drawColor":[]
           }
         }
