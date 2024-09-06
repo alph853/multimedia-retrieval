@@ -2,7 +2,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap:20px;
-    height: 400px;
+    height: 100%;
     overflow: scroll;
     padding: 20px;
     padding-top: 0;
