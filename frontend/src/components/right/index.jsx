@@ -3,7 +3,7 @@ import Bar from "./Bar"
 import Image from "./image"
 import classes from "./styles.module.css"
 import { GlobalContext } from "../../context"
-import axios from "axios"
+
 
 export default function Right() {
   const { images, setImages } = useContext(GlobalContext)

@@ -11,7 +11,7 @@ export default function Image({ src, id, width, height }) {
   }
   return (
     <div className={classes.image}>
-      <img src={src} onClick={handleImageClick} />
+      <img src={src} alt={src} onClick={handleImageClick} />
     </div>
   )
 }
