@@ -48,12 +48,12 @@ export default function Left() {
           txt:text,
           img:img_path,
           ocr:null,
-          idx:[],
-          tag:tag,
+          idx:null,
+          tag:tag?tag:null,
           asr:null,
-          obj:{
+          obj:drawImg?{
             "canvasSize":{"h":canvasH,"w":canvasW},
-            "dragObject":drawImg?.map(obj=>({
+            "dragObject":drawImg.map(obj=>({
                
                 class: obj.imageName,
                 position: {
@@ -65,7 +65,7 @@ export default function Left() {
               }
             })),
             "drawColor":[]
-          }
+          }:null
         }
       })
       console.log(obj);
