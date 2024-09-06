@@ -213,7 +213,7 @@ const DrawingBoard = () => {
         ...updatedInputBox[selectedFrame],
         data: {
           ...updatedInputBox[selectedFrame].data,
-          drawImg: imageData, // Update drawImg with the new imgData
+          drawImg: [imageData] ||[], // Update drawImg with the new imgData
         },
       }
 

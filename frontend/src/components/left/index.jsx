@@ -40,9 +40,10 @@ export default function Left() {
   }
   const handleSearchBE = () => {
       const obj = {}
+      console.log("Fetch: ",inputBox)
       inputBox.forEach((input,index)=>{
         const key = (index+1).toString();
-         const { text, img_path, drawImg,tag } = input.data
+        const { text, img_path, drawImg,tag } = input.data
         obj[key] = {
           txt:text,
           img:img_path,
@@ -52,7 +53,7 @@ export default function Left() {
           asr:null,
           obj:{
             "canvasSize":{"h":canvasH,"w":canvasW},
-            "dragObject":drawImg.map(obj=>({
+            "dragObject":drawImg?.map(obj=>({
                
                 class: obj.imageName,
                 position: {
