@@ -13,7 +13,7 @@ export default function Right() {
       <Bar></Bar>
       <div className={classes.imageContainer}>
         {images.map((image, idx) => (
-          <Image src={image} id={idx} width={250} height={150}></Image>
+          <Image src={image} id={idx} ></Image>
         ))}
       </div>
     </div>
