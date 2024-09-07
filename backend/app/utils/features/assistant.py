@@ -54,7 +54,6 @@ class TagAssistant:
             raw_data = f.readlines()
             raw_data = [word.strip() for word in raw_data]
 
-        print(f"Tag corpus loaded: {len(raw_data)} tags")
         return raw_data
 
 

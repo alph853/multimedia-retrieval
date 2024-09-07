@@ -12,26 +12,45 @@ class TagRetrieval:
         self.tfidf_transformer_path = tfidf_transformer_path
 
         self.tags_matrix = sp.sparse.load_npz(os.path.join(PROJECT_ROOT, tags_path))
+
+        self.check(self.tags_matrix)
+
         with open(os.path.join(PROJECT_ROOT, tfidf_transformer_path), 'rb') as f:
             self.tfidf_transformer = pickle.load(f)
 
     def __call__(self, q: list[str], k: int):
-
         query = preprocess(q)
 
-        query_vector = encode(query, self.tfidf_transformer)
+        scores = []
+        for single_frame_query in query:
+            query_vector = encode(single_frame_query, self.tfidf_transformer)
+            score = self.tags_matrix.dot(query_vector.T).toarray()
+            score = [s[0] for s in score]
+            scores.append(score)
+        scores = np.array(scores)
+        print(scores.shape)
 
-        scores = self.tags_matrix.dot(query_vector.T).toarray()
         top_k_indices = np.argsort(scores, axis=1)[:, ::-1][:, :k]
         scores = np.take_along_axis(scores, top_k_indices, axis=1)
 
         return scores, top_k_indices
 
+    def check(self, tags_matrix):
+        total_elements = tags_matrix.shape[0] * tags_matrix.shape[1]
+        non_zero_elements = tags_matrix.nnz
+        print(f"Total elements: {total_elements}, Non-zero elements: {non_zero_elements}")
+        sparsity = 1 - (non_zero_elements / total_elements)
+        # A value close to 1 indicates high sparsity
+        print(f"Sparsity: {sparsity:.4f}")
+
 
 def preprocess(query: list[str]):
     for i, tag_query in enumerate(query):
         if isinstance(tag_query, list):
-            query[i] = ' '.join(tag_query).lower()
+            tag_query = [tag.replace(' ', '_') for tag in tag_query]
+        query[i] = [' '.join(tag_query).lower()]
+        print(query[i])
+    print(query)
     return query
 
 

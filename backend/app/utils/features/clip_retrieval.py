@@ -55,7 +55,6 @@ class ClipRetrieval:
             raise ValueError("At least one query type must be provided.")
 
         query['txt'] = [self.translator(q) for q in query['txt']] if query['txt'] is not None else None
-        print('Translated content: ', query['txt'])
         query_types = {
             'txt': (query['txt'], self.encode_text),
             'img': (query['img'], self.encode_image),

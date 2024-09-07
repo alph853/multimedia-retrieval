@@ -9,7 +9,8 @@ from PIL import Image
 import io
 
 from utils import (RetrievalEngine, Assistant,
-                   check_invalid_request, parse_object_retrieval_request
+                   check_invalid_request, parse_object_retrieval_request,
+                   OCR
                    )
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -69,8 +70,8 @@ async def read_root():
 @app.post("/search")
 async def search(q: Query):
 
-    q.frame_info[1].img = None
-    q.frame_info[1].obj = None
+    # q.frame_info[1].img = None
+    # q.frame_info[1].obj = None
 
 
     if detail := check_invalid_request(q) is not None:
@@ -106,3 +107,7 @@ async def get_assistant(a: GetAssistant):
 #     s = input("Enter to continue, q or CTRL+C to quit: ")
 #     if s == 'q':
 #         break
+
+@app.get("/checkocr/{frame_id}")
+async def check_ocr(frame_id: int):
+    return OCR[frame_id]

@@ -52,9 +52,9 @@ class RetrievalEngine:
 
     def __init__(self, id2img_fps='dict/id2img_fps.json', metadata_path='dict/video_metadata.json'):
         self.feature_retrievers = {
+            'tag': TagRetrieval(),
             'clip': ClipRetrieval(),
             'ocr': OcrRetrieval(),
-            'tag': TagRetrieval(),
             # 'obj': ObjectRetrieval(),
             # 'asr': SpeechRetrieval(),
         }
@@ -63,7 +63,7 @@ class RetrievalEngine:
         self.id2img_fps = load_json_int_key(os.path.join(PROJECT_ROOT, id2img_fps))
         self.features = self.feature_retrievers.keys()
         self.query_types = ['txt', 'img', 'idx', 'tag', 'ocr', 'obj', 'asr']
-        self.method_type = 0
+        self.method_type = 1
 
     def __call__(self, frame_number: int, frame_info: dict, k: int):
         query, query_info = frame_info_to_query(self.features, frame_info)
@@ -92,7 +92,6 @@ class Assistant:
         self.prompt = PromptAssistant()
 
     def tag_assistant(self, query: str | list[str], num_tags: int):
-        print("Get tag assistant. Query: ", query)
         return self.tag(query)
 
     def prompt_assistant(self, query: str):
@@ -113,7 +112,6 @@ def frame_info_to_query(features, frame_info: dict):
     query = {}
     qinfo = {}
 
-    print(json.dumps(frame_info, indent=2))
 
     for f in features:
         if f == 'clip':
@@ -139,6 +137,8 @@ def frame_info_to_query(features, frame_info: dict):
 
         query[f] = query_list
         qinfo[f] = qinfo_list
+
+    print("Transformed Query: ", query)
 
     return query, qinfo
 
@@ -192,26 +192,21 @@ def calculate_final_score(methods_type, d, s_i, s_j):
     if not (1 < d <= 30):
         return s_i
 
-    methods = {
-        0: {
+    if methods_type == 0:
+        x = (s_i + s_j) / 2
+        bounded_frames = {
             10: lambda x: x**3+0.5,
             20: lambda x: x**2+0.25,
             30: lambda x: x
-        },
-        1: {'k': 1}
-    }
-
-    match methods_type:
-        case 0:
-            x = (s_i + s_j) / 2
-            for key in sorted(methods[0]):
-                if d <= key:
-                    return methods[0][key](x)
-        case 1:
-            k = methods[1]['k']
-            return s_i + s_j*k / d
-        case _:
-            return calculate_final_score(0, d, s_i, s_j)
+        }
+        for key in sorted(bounded_frames):
+            if d <= key:
+                return bounded_frames[key](x)
+    elif methods_type == 1:
+        k = 1
+        return s_i + s_j*k / d
+    else:
+        return calculate_final_score(0, d, s_i, s_j)
 
 
 def merge_results_all_frames(all_frames_results, frame_numbers, k, method_type=0):
@@ -239,6 +234,8 @@ def merge_results_all_frames(all_frames_results, frame_numbers, k, method_type=0
 def custom_serializer(obj):
     if isinstance(obj, np.int64):
         return int(obj)
+    if isinstance(obj, np.float32):
+        return float(obj)
     raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
 
 
