@@ -76,7 +76,7 @@ export default function Left() {
         number_of_frames:inputBox.length,
         frame_info:obj,
       })
-      .then((res) => setSearchResponse((s) => (s = res)))
+      .then((res) => setSearchResponse((s) => (s = res.json)))
     console.log(searchResponse);
   }
   return (
