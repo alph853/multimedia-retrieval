@@ -17,7 +17,6 @@ function MyDropzone() {
           }),
         ])
       }
-      console.log(files)
     },
     [files]
   )
@@ -44,8 +43,10 @@ function MyDropzone() {
         ) : (
             <ul style={{ listStyle: "none" }}>
               {files.map((file) => (
+                
                 <li key={file.name} className="file-list">
                   <div className="img">
+                  {console.log(file)}
                     <img
                       src={file.preview}
                       alt=""

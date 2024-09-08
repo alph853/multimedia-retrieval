@@ -3,32 +3,47 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto;
     gap: 10px;
-    
 }
 .model p{
     margin: 0px;
     font-weight: 500;
 }
 .model input[type="radio"]{
-     -webkit-appearance: none; /* Safari and Chrome */
-    -moz-appearance: none; /* Firefox */
-    appearance: none; /* Modern browsers */
+    -webkit-appearance: none;
+    -moz-appearance: none; 
+    appearance: none;
     width: 20px;
     height: 20px;
-    border: 2px solid black;
     border-radius: 4px; /* Optional: Add rounded corners */
-    cursor: pointer;
+    cursor: pointer; 
+    background-color: #ffff;
     position: relative;
-    top: 5px;
+    top: 5px; 
+}
+
+.model input[type="radio"]:checked{
+    color: #0000;
+    background-color: #B0DAF1 ;
 }
 
 
 .whole{
     display: flex;
+    justify-content: space-between;
     gap: 20px;
-    border: 1px solid black;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 20px 1px;  
     border-radius: 15px;
     padding: 10px;
+    padding: 20px 15px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.btn{
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
 }
 
 .btn button{
@@ -36,18 +51,31 @@
     width: 76px;
     border-radius: 5px;
     border: none;
-    background-color: black;
     color: white;
     font-weight: 600;
     height: 38px;
+    cursor: pointer;
+}
+
+.btn button:hover{
+    opacity: 90%;
 }
 
 .numberInput{
     font-weight:500;
+    width: 30%;
+    display: flex;
+    margin-top: 15px;
+    margin-bottom: 0px;
 }
 .numberInput input{
     width: 51px;
     height: 17px;
     border-radius: 5px;
     margin-left: 5px;
+    border: none;
+    background-color: rgb(255, 255, 255);
+    color: black;
+    padding-left: 5px;
+    outline: none;
 }

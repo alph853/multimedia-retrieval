@@ -7,33 +7,32 @@
     padding: 10px;
 }
 
-.btn button{
+.bar input{
     border: none;
-    background-color: black;
+    padding: 5px 10px;
+    width: 60px;
+    outline: none;
+    background-color: white;
+    border-radius: 7px;
+    color: black;
+    text-align: center;
+}
+
+.bar input::-webkit-input-placeholder{
+    color: black;
+}
+
+.bar button{
+    border: none;
+    background-color: rgb(9, 9, 9);
     color: white;
     font-weight: 600;
-    width: 76px;
-    height: 38px;
-    border-radius: 10px;
+    width: 66px;
+    height: 28px;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.right{
-    margin-top: 5px;
-}
-.right input[type="checkbox"] {
-    vertical-align: middle;
-}
-
-label {
-    vertical-align: middle;
-    margin-right: 30px;
-}
-.right input{
-    margin-left: 30px;
-    margin-right: 10px;
-    width: 18px;
-    height: 18px;
-    background-color: gray;
-    border: none;
-    
+.bar button:hover{
+    opacity: 60%;  
 }

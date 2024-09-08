@@ -14,13 +14,12 @@ function App() {
     useContext(GlobalContext)
 
   return (
-    <div className="app">
+    <div className="app" style={{alignItems: "center"}}>
       <Navbar></Navbar>
-      <div style={{ marginTop: "20px", display: "flex" }}>
+      <div style={{ marginTop: "20px", display: "flex" , justifyContent: "space-around"}}>
         <Left></Left>
         <Right></Right>
       </div>
-      <SideBar></SideBar>
       <CSSTransition
         in={!closeBoard}
         timeout={300}
@@ -28,8 +27,9 @@ function App() {
         unmountOnExit
       >
         <DrawingBoard></DrawingBoard>
-      </CSSTransition>
+      </CSSTransition> 
       {selectedImage !== null ? <ImageSlider></ImageSlider> : null}
+      <p style={{width: "fit-content", margin: "auto", fontSize: "11px", marginTop: "10px"}}>Copyright © 2024 Bb_Shark | All Rights Reserved</p>
     </div>
   )
 }

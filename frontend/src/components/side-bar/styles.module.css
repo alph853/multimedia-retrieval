@@ -1,14 +1,13 @@
 .sideBar{
     background-color: black;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 20px 1px;
     color: white;
     padding: 10px;
     border-radius: 10px;
-    width: 20px;
+    width: 40px;
     font-size: 20px;
-    position: fixed;
-    left: 10px;
-    bottom: 60px;
 }
 .sideBar p{
     cursor: pointer;
+    background: black;
 }

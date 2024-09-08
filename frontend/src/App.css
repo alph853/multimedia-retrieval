@@ -1,18 +1,23 @@
 :root{
-  --primary-color-dark: #274C6B;
+  --primary-color-dark: #1A1E23;
   --primary-color-light: #6B86A0;
-  --important: #EF4B4B;
+  --important: #ffb0b0;
   --background: #E8E8E8;
   --background-input: #D2D2D2;
   --text-input: #777676;
+  --bg-reset: #ff6259;
+  --bg-submit: #7eff75dd;
 }
 
 
+* {
+  box-sizing: border-box;
+  background-color: var(--primary-color-dark);
+  color: white;
+}
 
 .app{
-  background-color: rgba(242, 251, 254, 0.8);
   margin: 20px;
-  border-radius: 5px;
   padding: 0px 10px;
   height: 100%;
   font-size: 15px;
@@ -41,4 +46,16 @@
   opacity: 0;
   transform: translateY(-20px); /* Adjust the value as needed */
   transition: opacity 300ms, transform 300ms; /* Adjust duration as needed */
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+  -webkit-appearance: none; /* Chrome, Safari, Edge */
+  appearance: none; /* Hiệu ứng chung */
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* Chrome, Safari, Edge */
+  margin: 0;
 }

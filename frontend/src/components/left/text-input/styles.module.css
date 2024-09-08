@@ -1,5 +1,5 @@
 .textInput{
-    border: 1px solid gray;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 20px 1px;
     padding: 10px;
     border-radius: 15px;
     margin-top: 10px;
@@ -7,12 +7,15 @@
 
 
 .textInput textarea{
-    width: 260px;
-    height: 80px;
+    width: 300px;
+    height: 100px;
     border-radius: 15px;
     padding: 10px;
-    background-color: gray;
-
+    background-color: #eeeeee;
+    color: #000000;
+    outline: none;
+    margin: auto;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 20px 1px;
 }
 
 .model input[type="radio"]{
@@ -30,15 +33,46 @@
 
 .btn{
     margin-left: 10px;
+    align-items: end;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+    /* margin: 20px 0px; */
 }
 .btn button{
-    padding: 4px;
-    width: 76px;
+    padding: 8px 15px;
     border-radius: 5px;
     border: none;
     background-color: black;
     color: white;
     font-weight: 600;
-    height: 25px;
-    margin-top: 5px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 20px 1px;
+    cursor: pointer;
+}
+
+.btn button:hover{
+    opacity: 70%;
+}
+
+.model button{
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: #22253489;
+    color: white;
+    font-weight: 600;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 20px 1px;
+    cursor: pointer;
+}
+.model button:hover{
+    opacity: 70%;
+}
+
+.model {
+    align-items: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
 }

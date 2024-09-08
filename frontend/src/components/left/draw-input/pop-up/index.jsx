@@ -7,7 +7,6 @@ import { icons } from "./helper/icons"
 import { importImages } from "./helper/importImg"
 
 const DrawingBoard = () => {
-  // Existing state and refs
   const [images, setImages] = useState({})
   const [isDrawing, setIsDrawing] = useState(false)
   const [selectedTool, setSelectedTool] = useState("brush")
@@ -16,15 +15,7 @@ const DrawingBoard = () => {
   const [snapshot, setSnapshot] = useState(null)
   const [prevMouseX, setPrevMouseX] = useState(0)
   const [prevMouseY, setPrevMouseY] = useState(0)
-  const {
-    closeBoard,
-    setCloseBoard,
-    setCanvasH,
-    setCanvasW,
-    inputBox,
-    setInputBox,
-    selectedFrame,
-  } = useContext(GlobalContext)
+  const {closeBoard, setCloseBoard, files, setFiles} = useContext(GlobalContext)
   const [showMore, setShowMore] = useState(true)
   const [imageData, setImageData] = useState([])
   const [selectedImage, setSelectedImage] = useState(null)
@@ -143,91 +134,55 @@ const DrawingBoard = () => {
 
   const saveImg = () => {
     const canvas = canvasRef.current
-    const link = document.createElement("a")
-    link.download = `${Date.now()}.jpg`
-    link.href = canvas.toDataURL()
-    link.click()
+    canvas.toBlob(function(blob) {
+      if (blob) {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const file = {
+          blob,
+          size: blob.size,
+          name: "image_"+ `${year}_${month}_${day}_${hours}_${minutes}_${seconds}`,
+          preview: URL.createObjectURL(blob),
+        };
+        setFiles((prevFiles) => [...prevFiles, file]);
+      }
+      console.log(file);
+    }, 'image/png')
+    setCloseBoard(true)
   }
 
   const handleDrag = (e) => {
     e.dataTransfer.setData("text/plain", e.currentTarget.id)
   }
 
- const handleDrop = (e) => {
-   e.preventDefault()
-   const canvas = canvasRef.current
-   const ctx = canvas.getContext("2d")
-   const icon = e.dataTransfer.getData("text/plain")
-   if (!icon || !images[icon]) return
-   const x = e.nativeEvent.offsetX
-   const y = e.nativeEvent.offsetY
-   const img = new Image()
-   img.src = images[icon]
-   img.onload = () => {
-     const scale = 0.5 // Scale down to 50% of the original size
-     const width = img.width * scale
-     const height = img.height * scale
-     ctx.drawImage(img, x - width / 2, y - height / 2, width, height)
-     setImageData((prevImageData) => [
-       ...prevImageData,
-       {
-         img,
-         x: x - width / 2,
-         y: y - height / 2,
-         width,
-         height,
-         imageName: icon,
-       }, // Add imageName here
-     ])
-   }
- }
-
-
-  const handleDragOver = (e) => e.preventDefault()
-
-  useEffect(() => {
+  const handleDrop = (e) => {
+    e.preventDefault()
     const canvas = canvasRef.current
     const ctx = canvas.getContext("2d")
-    canvas.width = canvas.offsetWidth
-    canvas.height = canvas.offsetHeight
-    setCanvasW(canvas.width) // Update canvas width in context
-    setCanvasH(canvas.height) // Update canvas height in context
-    setCanvasBackground(ctx, canvas)
-  }, [setCanvasW, setCanvasH])
-
-  // Function to get image coordinates
-  const getImageCoordinates = (image) => {
-    return {
-      xLeft: image.x,
-      xRight: image.x + image.width,
-      yTop: image.y,
-      yBottom: image.y + image.height,
+    const icon = e.dataTransfer.getData("text/plain")
+    if (!icon || !images[icon]) return
+    const x = e.nativeEvent.offsetX
+    const y = e.nativeEvent.offsetY
+    const img = new Image()
+    img.src = images[icon]
+    img.onload = () => {
+      const scale = 0.5 // Scale down to 50% of the original size
+      const width = img.width * scale
+      const height = img.height * scale
+      ctx.drawImage(img, x - width / 2, y - height / 2, width, height)
+      setImageData([
+        ...imageData,
+        { img, x: x - width / 2, y: y - height / 2, width, height },
+      ])
     }
   }
 
-  // Example usage to log coordinates
-  useEffect(() => {
-    setInputBox((prevInputBox) => {
-      const updatedInputBox = [...prevInputBox]
-      updatedInputBox[selectedFrame] = {
-        ...updatedInputBox[selectedFrame],
-        data: {
-          ...updatedInputBox[selectedFrame].data,
-          drawImg: imageData, // Update drawImg with the new imgData
-        },
-      }
-
-      return updatedInputBox
-    });
-
-    imageData.forEach((image) => {
-      const coords = getImageCoordinates(image)
-      console.log(
-        `Image coordinates: XLeft=${coords.xLeft}, XRight=${coords.xRight}, YTop=${coords.yTop}, YBottom=${coords.yBottom}`
-      )
-    })
-    console.log("Img: ", inputBox)
-  }, [imageData]) // This effect will run whenever imageData changes
+  const handleDragOver = (e) => e.preventDefault()
 
   return (
     <div className="body">
@@ -235,7 +190,7 @@ const DrawingBoard = () => {
         <section className="tools-board">
           <div className="row">
             <label className="title">Shapes</label>
-            <ul className="options icons">
+            <ul className="options icons" style={{padding : "0px"}}>
               {!showMore
                 ? icons.slice(0, 28).map((icon) => (
                     <li key={icon}>
@@ -258,6 +213,7 @@ const DrawingBoard = () => {
                         onClick={() => setSelectedTool(icon)}
                         draggable
                         onDragStart={handleDrag}
+                        style={{filter: "invert(100%)", backgroundColor: "transparent"}}
                       />
                     </li>
                   ))}
@@ -266,7 +222,7 @@ const DrawingBoard = () => {
 
           <div className="row">
             <label className="title">Options</label>
-            <ul className="options">
+            <ul className="options" style={{padding : "0px"}}>
               <li
                 className={`option tool ${
                   selectedTool === "brush" ? "active" : ""
@@ -294,7 +250,7 @@ const DrawingBoard = () => {
                 id="move"
                 onClick={() => setSelectedTool("move")}
               >
-                <span>Width</span>
+                <div>Width</div>
               </li>
               <li className="option">
                 <input
@@ -311,7 +267,7 @@ const DrawingBoard = () => {
 
           <div className="row colors">
             <label className="title">Colors</label>
-            <ul className="options">
+            <ul className="options" style={{padding : "0px"}}>
               <li
                 className={`option ${
                   selectedColor === "#000" ? "selected" : ""
@@ -380,6 +336,7 @@ const DrawingBoard = () => {
           top: "-265px",
           left: "-35px",
           zIndex: "100",
+          borderRadius: "50%"
         }}
         onClick={() => setCloseBoard(true)}
       ></FaRegCircleXmark>

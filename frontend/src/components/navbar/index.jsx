@@ -10,7 +10,7 @@ export default function Navbar() {
           <img src={logo} alt="logo" name="logo" className={classes.image} />
         </a>
       </div>
-      <div style={{ display: "flex", marginTop: "10px" }}>
+      <div style={{ display: "flex"}}>
         <ul className={classes.list}>
           <li>Media retrieval</li>
           <li>Getting Started</li>

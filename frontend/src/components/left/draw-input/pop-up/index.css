@@ -1,8 +1,6 @@
-
-
 .body{
-    position: relative;
-    top:-108vh;
+    position: fixed;
+    top:0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -25,19 +23,20 @@
     width: 100%;
     gap:10px;
     padding: 10px;
-    max-width: 750px;
+    max-width: 800px;
     max-height: 90vh;
     position: relative;
     z-index: 2;
+    border-radius: 10px;
 }
 
 section{
-    background: #fff;
+    background: transparent;
     border-radius: 7px;
 }
 
 .tools-board{
-    width: 210px;
+    width: 300px;
     padding: 15px 22px 0;
 }
 .tools-board .row{
@@ -49,9 +48,10 @@ section{
     margin: 10px 0 0 5px;
     display: grid;
     gap:5px;
-    margin-left: -40px;
+    width: 100%;
+    /* margin-left: -40px; */
     padding-right: 5px;
-    margin-right: -15px;
+    /* margin-right: -15px; */
 }
 .row .icons {
     display: grid;
@@ -76,12 +76,13 @@ section{
 
 .row .icons::-webkit-scrollbar-thumb:hover {
     background: #555;  /* Color when hovered */
+    background-color: transparent;
 }
 
 /* Customizing scrollbar for Firefox */
 .row .icons {
     scrollbar-width: thin;  /* Thin scrollbar */
-    scrollbar-color: #888 #f1f1f1;  /* Thumb color and track color */
+    scrollbar-color: #888 transparent;  /* Thumb color and track color */
 }
 
 /* Optional: Add padding to prevent content from being cut off */
@@ -94,9 +95,9 @@ section{
     margin-bottom: 10px;
     cursor: pointer;
 }
-.option:is(:hover,.active) .fa{
+/* .option:is(:hover,.active) .fa{
     filter: invert(17%) sepia(90%) saturate(3000%) hue-rotate(900deg) brightness(100%) contrast(100%);
-}
+} */
 .option :where(span,label){
     color: #5A6168;
     cursor: pointer;

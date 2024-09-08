@@ -1,10 +1,10 @@
 .imageContainer{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap:20px;
-    height: 400px;
-    overflow: scroll;
-    padding: 20px;
+    height: 68vh;
+    width: auto;
+    overflow-y: scroll;
     padding-top: 0;
     margin-top: 20px;
 }
@@ -14,7 +14,7 @@
     height: 5px;
 }
 .imageContainer::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: transparent;
 }
 
 .imageContainer::-webkit-scrollbar-thumb {
@@ -27,4 +27,74 @@
 }
 .imageContainer::-webkit-scrollbar-horizontal {
     display: none;
+}
+
+.lstQueue{
+    width: 600px;
+    /* position: fixed; */
+    bottom: 30px;
+    right: 0;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    background-color: #32466272;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 20px 1px;
+    margin-right: 20px;
+    padding-right: 20px;
+}
+
+.lstBox{
+    background-color: transparent;
+    overflow-x: scroll;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    height: fit-content;
+    border-radius: 5px;
+    max-width: 800px;
+    align-items: center;
+    background-color: transparent;
+    border-radius: 15px;
+}
+
+.lstBox::-webkit-scrollbar {
+    width: 10px;
+    height: 8px;
+}
+.lstBox::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.lstBox::-webkit-scrollbar-thumb {
+    background: #32466250;
+    border-radius: 6px;
+    
+}
+.lstBox::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    border-radius: 6px;
+}
+.lstBox::-webkit-scrollbar-horizontal {
+    display: none;
+}
+
+.chevron{
+    font-size: 30px;
+    z-index: 5;
+    background-color: transparent;
+    height: 200px;
+    top: 0;
+    margin: 0 20px;
+    cursor: pointer;
+}
+
+.boxQueue{
+    position: fixed;
+    bottom: 3vh;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    background-color: transparent;
+    height: fit-content;
 }

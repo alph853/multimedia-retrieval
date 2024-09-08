@@ -1,40 +1,44 @@
 .drawing{
-    border: 1px solid gray;
     border-radius: 15px;
     padding: 10px;
-    margin-top: 10px;
-    background-color: gray;
+    margin-top: 20px;
     display: flex;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 20px 1px;    
 }
 .canvas{
-    flex: 0 0 60%;
+    /* flex: 0 0 60%;
     background-color:white;
     border-radius: 15px;
     box-shadow: 0 4px 0 0 #222;
     background-color: white;
     width: 200px;
     height: 150px;
-    padding: 10px;
+    padding: 10px; */
+
 }
 
-
-
-
 .color button{
+  margin-left: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  background-color: #22253489;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 20px 1px;    
+  color: white;
+  border: none;
+  font-weight: 600;
+  padding: 5px 10px;
+  cursor: pointer;
+}
 
-    margin-left: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-    background-color: black;
-    color: white;
-    border: none;
-    font-weight: 600;
-    padding: 5px 10px;
-    cursor: pointer;
-    
+.color button:hover {
+  opacity: 60%;
 }
 .exitBtn{
     background-color: red;
+}
+
+.exitBtn:hover{
+  opacity: 60%;
 }
 .color ul li{
     width: 25px;
@@ -53,7 +57,7 @@
   -moz-transform: translateX(100%);
   -webkit-transform: translateX(100%);
   transform: translateX(100%);
-  
+
   -moz-animation: my-animation 8s linear infinite;
   -webkit-animation: my-animation 8s linear infinite;
   animation: my-animation 8s linear infinite;

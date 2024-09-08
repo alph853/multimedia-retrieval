@@ -1,13 +1,16 @@
 .navbar{
     display: flex;
     justify-content: space-between;
-    border: 1px solid gray;
+    border: 1px solid transparent;
     border-radius: 16px;
-    
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 20px 1px;    
+    padding: 0 25px;
+    max-width: 1440px;
+    margin: auto;
 }
 .image{
-    height:70px;
-    width: 140px;
+    height:65px;
+    width: 130px;
 }
 
 .history{
@@ -44,8 +47,8 @@
     border-radius: 10px;
     margin-right: 10px;
     padding-left: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
-            transition: box-shadow 0.3s ease-in-out; /* Smooth transition */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
+    transition: box-shadow 0.3s ease-in-out; /* Smooth transition */
 
 }
 .input:focus{
@@ -55,9 +58,15 @@
 .list{
     list-style: none;
     display: flex;
+    align-items: center;
 }
 .list li{
-    margin-right: 30px;
+    margin-left: 30px;
     font-weight: 600;
     cursor: pointer;
+    height: fit-content;
+}
+
+.list li:hover{
+    color: #B0DAF1;
 }

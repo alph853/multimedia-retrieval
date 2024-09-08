@@ -4,37 +4,24 @@ import { GlobalContext } from '../../../context'
 
 
 export default function TextInput({id}){
-  const { removeInput, setInputBox, selectedFrame } = useContext(GlobalContext)
-  const handleInputChange = e =>{
-    setInputBox((prevInputBox) => {
-      const updatedInputBox = [...prevInputBox]
-      updatedInputBox[selectedFrame] = {
-        ...updatedInputBox[selectedFrame],
-        data: {
-          ...updatedInputBox[selectedFrame].data,
-          text: e.target.value, // Update drawImg with the new imgData
-        },
-      }
-
-      return updatedInputBox
-    })
-
-  }
+  const {removeInput, setInputBox, selectedFrame} = useContext(GlobalContext)
     return (
-      <div className={classes.textInput} >
-        <input name="text-input-user" type='text' onChange={handleInputChange}/>
-        <div style={{ display: "flex", gap: "20px" }}>
+      <div className={classes.textInput}>
+        <textarea name="text-input-user" />
+        <div style={{ display: "flex", justifyContent: "space-between", padding: "10px" }}>
           <div className={classes.model}>
-            <input type="radio" name="prompt" />
-            <label for="radio1">Prompt Assistant</label>
-            <br></br>
-            <input type="radio" name="tag" />
-            <label for="radio2">Tag Assistant</label>
+            {/* <input type="radio" name="prompt" />
+            <label for="radio1">Prompt Assistant</label> */}
+            <button>Prompt Assistant</button>
+            {/* <br></br> */}
+            {/* <input type="radio" name="tag" />
+            <label for="radio2">Tag Assistant</label> */}
+            <button style={{marginTop: "10px"}}>Tag Assistant</button>
           </div>
           <div className={classes.btn}>
-            <button>Translate</button>
-            <br />
-            <button cur-id={id} onClick={removeInput}>Exit</button>
+            <button style={{backgroundColor: "#22253489"}}>Translate</button>
+            {/* <br /> */}
+            <button cur-id={id} onClick={removeInput}  style={{marginTop: "10px", backgroundColor : "var(--bg-reset)"}}>Exit</button>
           </div>
         </div>
       </div>
