@@ -6,14 +6,17 @@ import { GlobalContext } from "../../context"
 
 
 export default function Right() {
-  const { images, setImages } = useContext(GlobalContext)
+  const { images, setImages, searchResponse } = useContext(GlobalContext)
+  useEffect(()=>{
+    setImages(searchResponse.all || searchResponse["1"]);
+  },[searchResponse]);
 
   return (
     <div style={{ flex: "0 0 68%", marginLeft: "15px" }}>
       <Bar></Bar>
       <div className={classes.imageContainer}>
-        {images.map((image, idx) => (
-          <Image src={image} id={idx} ></Image>
+        {images?.map((image, idx) => (
+          <Image src={image.img_path} id={idx} ></Image>
         ))}
       </div>
     </div>
