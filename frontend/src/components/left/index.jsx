@@ -23,6 +23,7 @@ function render(type, prop) {
 }
 
 export default function Left() {
+
   const {
     inputBox,
     setInputBox,
@@ -79,6 +80,17 @@ export default function Left() {
       .then((res) => setSearchResponse((s) => (s = res.json)))
     console.log(searchResponse);
   }
+  const detectKeyDown = (e) => {
+    console.log(e.key);
+    if(e.ctrlKey && e.key ==='Enter'){
+      e.preventDefault();
+      handleSearchBE();
+    }
+  };
+  useEffect(()=>{
+    document.addEventListener('keydown',detectKeyDown,true)
+  },[])
+  
   return (
     <div style={{ flex: "0 0 26%", marginLeft: "25px" }}>
       <ModelSelection></ModelSelection>
