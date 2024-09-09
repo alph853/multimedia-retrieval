@@ -27,7 +27,22 @@ export default function GlobalState({ children }) {
     },
   ])
   const [closeBoard, setCloseBoard] = useState(true)
-  const [searchResponse, setSearchResponse] = useState([])
+  // Test => final version set searchResponse to []
+  const [searchResponse, setSearchResponse] = useState({
+    all: [
+      {
+        img_path:
+          "https://i.pinimg.com/564x/6d/c3/47/6dc3470f6698bc499f95a034654b450c.jpg",
+        scene_id: "/L10/V006/196",
+        frm_number: "15441",
+        score: 0.4631200432777405,
+        frm_id: 272834,
+        format: "L10_V006, 15441",
+        publish_date: "25/02/2024",
+        watch_url: "https://youtube.com/watch?v=ZHsJ3eNoCvk&t=617s",
+      },
+    ],
+  })
   const [selectedFrame, setSelectedFrame] = useState(0)
   const [selectedImage, setSelectedImage] = useState(null)
   const [numImg,setNumImg] =  useState(0);

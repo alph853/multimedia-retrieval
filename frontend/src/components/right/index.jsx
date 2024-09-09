@@ -16,7 +16,7 @@ export default function Right() {
       <Bar></Bar>
       <div className={classes.imageContainer}>
         {images?.map((image, idx) => (
-          <Image src={image.img_path} id={idx} ></Image>
+          <Image src={image.img_path} id={idx} yt_link={image.watch_url}></Image>
         ))}
       </div>
     </div>
