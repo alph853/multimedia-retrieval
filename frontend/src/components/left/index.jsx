@@ -51,7 +51,7 @@ export default function Left() {
           idx:null,
           tag:tag?tag:null,
           asr:null,
-          obj:drawImg?{
+          obj:drawImg?.length?{
             "canvasSize":{"h":canvasH,"w":canvasW},
             "dragObject":drawImg.map(obj=>({
                
@@ -70,7 +70,7 @@ export default function Left() {
       })
       console.log(obj);
     axios
-      .post("http://localhost:5173/search", {
+      .post("http://localhost:8000/search", {
         number:numImg,
         search_space_idx:[], 
         number_of_frames:inputBox.length,
