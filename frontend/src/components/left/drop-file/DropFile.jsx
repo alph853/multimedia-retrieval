@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react"
+import { useCallback, useContext} from "react"
 import { useDropzone } from "react-dropzone"
 import "./index.css"
 import { FaCloudUploadAlt } from "react-icons/fa"
@@ -46,7 +46,6 @@ function MyDropzone() {
                 
                 <li key={file.name} className="file-list">
                   <div className="img">
-                  {console.log(file)}
                     <img
                       src={file.preview}
                       alt=""
@@ -57,7 +56,7 @@ function MyDropzone() {
                   </div>
                   <div className="img-info">
                     <p style={{ fontWeight: "600" }}>{file.name}</p>
-                    <p style={{ marginTop: "-10px" }}>{file.size}B</p>
+                    <p style={{ marginTop: "-10px" }}>{Math.round(file.size / 1024)}KB</p>
                   </div>
                 </li>
               ))}

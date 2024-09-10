@@ -5,9 +5,23 @@ import { GlobalContext } from '../../../context'
 
 export default function TextInput({id}){
   const {removeInput, setInputBox, selectedFrame} = useContext(GlobalContext)
+  const handleInputChange = e =>{
+    setInputBox((prevInputBox) => {
+      const updatedInputBox = [...prevInputBox]
+      updatedInputBox[selectedFrame] = {
+        ...updatedInputBox[selectedFrame],
+        data: {
+          ...updatedInputBox[selectedFrame].data,
+          text: e.target.value, // Update drawImg with the new imgData
+        },
+      }
+      console.log(updatedInputBox)
+      return updatedInputBox
+    })
+  }
     return (
       <div className={classes.textInput}>
-        <textarea name="text-input-user" />
+        <textarea name="text-input-user" onChange={handleInputChange}/>
         <div style={{ display: "flex", justifyContent: "space-between", padding: "10px" }}>
           <div className={classes.model}>
             {/* <input type="radio" name="prompt" />

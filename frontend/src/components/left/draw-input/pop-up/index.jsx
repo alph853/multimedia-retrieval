@@ -15,7 +15,7 @@ const DrawingBoard = () => {
   const [snapshot, setSnapshot] = useState(null)
   const [prevMouseX, setPrevMouseX] = useState(0)
   const [prevMouseY, setPrevMouseY] = useState(0)
-  const {closeBoard, setCloseBoard, files, setFiles} = useContext(GlobalContext)
+  const {setCanvasH,setCanvasW,inputBox,setInputBox,selectedFrame,closeBoard, setCloseBoard, files, setFiles} = useContext(GlobalContext)
   const [showMore, setShowMore] = useState(true)
   const [imageData, setImageData] = useState([])
   const [selectedImage, setSelectedImage] = useState(null)
@@ -175,14 +175,66 @@ const DrawingBoard = () => {
       const width = img.width * scale
       const height = img.height * scale
       ctx.drawImage(img, x - width / 2, y - height / 2, width, height)
-      setImageData([
-        ...imageData,
-        { img, x: x - width / 2, y: y - height / 2, width, height },
+      setImageData((prevImageData) => [
+        ...prevImageData,
+        {
+          img,
+          x: x - width / 2,
+          y: y - height / 2,
+          width,
+          height,
+          imageName: icon,
+        }, // Add imageName here
       ])
     }
   }
 
   const handleDragOver = (e) => e.preventDefault()
+
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext("2d")
+    canvas.width = canvas.offsetWidth
+    canvas.height = canvas.offsetHeight
+    setCanvasW(canvas.width) // Update canvas width in context
+    setCanvasH(canvas.height) // Update canvas height in context
+    setCanvasBackground(ctx, canvas)
+  }, [setCanvasW, setCanvasH])
+
+  // Function to get image coordinates
+  const getImageCoordinates = (image) => {
+    return {
+      xLeft: image.x,
+      xRight: image.x + image.width,
+      yTop: image.y,
+      yBottom: image.y + image.height,
+    }
+  }
+
+  // Example usage to log coordinates
+  useEffect(() => {
+    setInputBox((prevInputBox) => {
+      const updatedInputBox = [...prevInputBox]
+      updatedInputBox[selectedFrame] = {
+        ...updatedInputBox[selectedFrame],
+        data: {
+          ...updatedInputBox[selectedFrame].data,
+          drawImg: [imageData] ||[], // Update drawImg with the new imgData
+        },
+      }
+
+      return updatedInputBox
+    });
+
+    imageData.forEach((image) => {
+      const coords = getImageCoordinates(image)
+      console.log(
+        `Image coordinates: XLeft=${coords.xLeft}, XRight=${coords.xRight}, YTop=${coords.yTop}, YBottom=${coords.yBottom}`
+      )
+    })
+    console.log("Img: ", inputBox)
+  }, [imageData]) // This effect will run whenever imageData changes
 
   return (
     <div className="body">

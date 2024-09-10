@@ -29,30 +29,68 @@ export default function Left() {
     setSelectedFrame,
     searchResponse,
     setSearchResponse,
+    numImg,
+    canvasW,
+    canvasH,
+    setImages,
   } = useContext(GlobalContext)
   function handleDeleteFrame() {
     setInputBox((i) => (i = inputBox.filter((_, idx) => idx !== selectedFrame)))
     setSelectedFrame(0)
   }
   const handleSearchBE = () => {
-    const img_query = inputBox.map((item) => item.data.img_path)
-    const text_query = inputBox.map((item) => item.data.text)
-    const obd_query = [""]
-    const ocr_query = [""]
-    const tag_query = [""]
-
-    axios
-      .post("http://localhost:5173/search", {
-        search_space_idx: "",
-        number: 0,
-        img_query,
-        text_query,
-        obd_query,
-        ocr_query,
-        tag_query,
-      })
-      .then((res) => setSearchResponse((s) => (s = res)))
+    const obj = {}
+    console.log("Fetch: ",inputBox)
+    inputBox.forEach((input,index)=>{
+      const key = (index+1).toString();
+      const { text, img_path, drawImg,tag } = input.data
+      obj[key] = {
+        txt:text,
+        img:img_path,
+        ocr:null,
+        idx:null,
+        tag:tag?tag:null,
+        asr:null,
+        obj:drawImg?.length?{
+          "canvasSize":{"h":canvasH,"w":canvasW},
+          "dragObject":drawImg.map(obj=>({
+             
+              class: obj.imageName,
+              position: {
+                xTop: obj.x,
+                xBottom: obj.x + obj.width,
+                yTop: obj.y,
+                yBottom: obj.y + obj.height
+              
+            }
+          })),
+          "drawColor":[]
+        }:null
+      }
+    })
+    console.log(obj);
+  axios
+    .post("http://localhost:8000/search", {
+      number:numImg,
+      search_space_idx:[], 
+      number_of_frames:inputBox.length,
+      frame_info:obj,
+    })
+    .then((res) => setSearchResponse((s) => (s = res.json)))
+  setImages(searchResponse['all'])
+  console.log(searchResponse);
   }
+  const detectKeyDown = (e) => {
+    console.log(e.key);
+    if(e.ctrlKey && e.key ==='Enter'){
+      e.preventDefault();
+      handleSearchBE();
+    }
+  };
+  useEffect(()=>{
+    document.addEventListener('keydown',detectKeyDown,true)
+  },[])
+  
   return (
     <div style={{height: "100%", display: "flex", justifyItems: "center", alignItems: "center"}}>
       <div>

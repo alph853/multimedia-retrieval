@@ -37,8 +37,8 @@
 }
 
 .image img{
-    width: 224px;
-    height: 126px;
+    width: 220px;
+    height: 124px;
     border-radius: 10px;
     -webkit-filter: brightness(70%);
     -webkit-transition: all 1s ease;

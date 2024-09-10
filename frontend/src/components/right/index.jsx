@@ -14,13 +14,13 @@ export default function Right() {
       {checkFilter == false ? (
         <div className={classes.imageContainer}>
           {images.map((image, idx) => (
-            <Image src={image} id={idx}></Image>
+            <Image src={image} id={idx} yt_link={image.watch_url}></Image>
           ))}
         </div>
       ): (
         <div className={classes.imageContainer}>
           {imagesTemp.map((image, idx) => (
-            <Image src={image} id={idx}></Image>
+            <Image src={image} id={idx} yt_link={image.watch_url}></Image>
           ))}
         </div>
       )}
