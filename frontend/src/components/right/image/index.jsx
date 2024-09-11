@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import classes from "./styles.module.css"
 import { GlobalContext } from "../../../context"
 
@@ -11,13 +11,6 @@ export default function Image({ src, id, yt_link , style}) {
   // function handleImageClick() {
   //   setSelectedImage((i) => (i = id))
   // }
-  function handleAnswer(e){
-    const updatedImages = [...images]
-    updatedImages[id].answer = e.target.value
-    setImages(updatedImages);
-    console.log(images);
-    setAns(e.target.value);
-  }
   function handleClick() {
     imageQueue.push(images[id]);
     setImageQueue([...imageQueue])
@@ -50,9 +43,9 @@ export default function Image({ src, id, yt_link , style}) {
       style={style}
     >
       <label onClick={handleClick}> {id + 1} </label>
+
       <img src={src["img_path"]} onClick={handleImageClick} />
-      <p onClick={() => setHiddenImage(!hiddenImage)}>{src["format"]}</p>
-      {<input type="text" className={ans === "" ? classes.hidden1:"" } onChange={handleAnswer}/>}
+      <p onClick={() => setHiddenImage(!hiddenImage)}>{src['format']}</p>
     </div>
   )
 }

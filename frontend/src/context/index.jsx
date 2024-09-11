@@ -4,6 +4,7 @@ export const GlobalContext = createContext(null)
 
 export default function GlobalState({ children }) {
   const [images, setImages] = useState([])
+  const [selector,setSelector] = useState(true)
   const [files, setFiles] = useState([])
   const [inputBox, setInputBox] = useState([
     {
@@ -28,8 +29,12 @@ export default function GlobalState({ children }) {
         format: "L10_V006, 15441",
         publish_date: "25/02/2024",
         watch_url: "https://youtube.com/watch?v=ZHsJ3eNoCvk&t=617s",
+<<<<<<< HEAD
         answer: "",
         timeframe: ""
+=======
+        answer:""
+>>>>>>> ea28bda088b59ac73813a96634f4e84ee4ecf7d8
       },
     ],
   })
@@ -93,14 +98,16 @@ export default function GlobalState({ children }) {
         canvasW,
         setCanvasH,
         setCanvasW,
-        imagesTemp, 
+        imagesTemp,
         setImageTemp,
         imageQueue,
         setImageQueue,
-        checkFilter, 
+        checkFilter,
         setCheckFilter,
-        selectTag, 
-        setSelectTag
+        selectTag,
+        setSelectTag,
+        selector,
+        setSelector,
       }}
     >
       {children}
