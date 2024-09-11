@@ -47,7 +47,7 @@ export default function Left() {
         const { text, img_path, drawImg,tag } = input.data
         obj[key] = {
           txt:text,
-          img:img_path,
+          img:img_path===""?null:img_path,
           ocr:null,
           idx:null,
           tag:tag?tag:null,
