@@ -30,14 +30,17 @@ export default function Left() {
     searchResponse,
     setSearchResponse,
     numImg,
+    setNumImg,
     canvasW,
     canvasH,
     setImages,
+    images,
   } = useContext(GlobalContext)
   function handleDeleteFrame() {
     setInputBox((i) => (i = inputBox.filter((_, idx) => idx !== selectedFrame)))
     setSelectedFrame(0)
   }
+  
   const handleSearchBE = () => {
     const obj = {}
     console.log("Fetch: ",inputBox)
@@ -46,22 +49,20 @@ export default function Left() {
       const { text, img_path, drawImg,tag } = input.data
       obj[key] = {
         txt:text,
-        img:img_path,
+        img:img_path.length > 0? img_path : null,
         ocr:null,
         idx:null,
         tag:tag?tag:null,
         asr:null,
         obj:drawImg?.length?{
           "canvasSize":{"h":canvasH,"w":canvasW},
-          "dragObject":drawImg.map(obj=>({
-             
+          "dragObject":drawImg.map(obj=>({ 
               class: obj.imageName,
               position: {
                 xTop: obj.x,
                 xBottom: obj.x + obj.width,
                 yTop: obj.y,
                 yBottom: obj.y + obj.height
-              
             }
           })),
           "drawColor":[]
@@ -76,10 +77,13 @@ export default function Left() {
       number_of_frames:inputBox.length,
       frame_info:obj,
     })
-    .then((res) => setSearchResponse((s) => (s = res.json)))
-  setImages(searchResponse['all'])
-  console.log(searchResponse);
+    .then((res) => setSearchResponse((s) => (s = JSON.parse(res.data))))
   }
+  useEffect(() => {
+    // console.log()
+    setImages(Object.values(searchResponse).flat())
+    console.log(images)
+  }, [searchResponse]);
   const detectKeyDown = (e) => {
     console.log(e.key);
     if(e.ctrlKey && e.key ==='Enter'){
@@ -97,8 +101,8 @@ export default function Left() {
         <SideBar></SideBar>
       </div>
       <div style={{ flex: "0 0 26%", marginLeft: "25px" }}>
-        <ModelSelection></ModelSelection>
-        <hr></hr>
+        {/* <ModelSelection></ModelSelection> */}
+        {/* <hr></hr> */}
         <div>
           <div
             style={{
@@ -120,6 +124,7 @@ export default function Left() {
               ))}
             </div>
             <div>
+              <input type="number" name="model-input" className={classes.inputNumber} onChange={(e) => setNumImg(e.target.value)} defaultValue={1} placeholder="Number"></input>
               <button className={classes.submitBtn} style={{backgroundColor: "var(--bg-submit)"}} onClick={handleSearchBE}>
                 Submit
               </button>

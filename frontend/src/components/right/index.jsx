@@ -1,9 +1,8 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import Bar from "./Bar"
 import Image from "./image"
 import classes from "./styles.module.css"
 import { GlobalContext } from "../../context"
-import axios from "axios"
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 export default function Right() {
   const {images, setImages , imagesTemp, setImageTemp,imageQueue, setImageQueue, checkFilter, setCheckFilter} = useContext(GlobalContext)

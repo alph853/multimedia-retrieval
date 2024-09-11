@@ -233,3 +233,30 @@
 .tagRightControl button:hover{
     opacity: 60%;
 }
+/* 
+.inputNumber{
+    background-color: #ffff;
+    height: 100%;
+    border-radius: 5px;
+    outline: none;
+    width: 60px;
+    margin-left: 5px;
+    color: #0000;
+    border: none;
+
+} */
+.inputNumber{
+    border: none;
+    padding: 5px 10px;
+    width: 40px;
+    outline: none;
+    background-color: white;
+    border-radius: 7px;
+    color: black;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.inputNumber::-webkit-input-placeholder{
+    color: black;
+}
