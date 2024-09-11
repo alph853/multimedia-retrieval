@@ -28,6 +28,8 @@ export default function GlobalState({ children }) {
         format: "L10_V006, 15441",
         publish_date: "25/02/2024",
         watch_url: "https://youtube.com/watch?v=ZHsJ3eNoCvk&t=617s",
+        answer: "",
+        timeframe: ""
       },
     ],
   })

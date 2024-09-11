@@ -3,13 +3,21 @@ import classes from "./styles.module.css"
 import { GlobalContext } from "../../../context"
 
 export default function Image({ src, id, yt_link , style}) {
-  const { images, selectedImage, setSelectedImage, imageQueue, setImageQueue } = useContext(GlobalContext)
+  const { images,setImages, selectedImage, setSelectedImage, imageQueue, setImageQueue } = useContext(GlobalContext)
 
   const [hiddenImage, setHiddenImage] = useState(false)
+  const [ans,setAns] = useState("");
 
   // function handleImageClick() {
   //   setSelectedImage((i) => (i = id))
   // }
+  function handleAnswer(e){
+    const updatedImages = [...images]
+    updatedImages[id].answer = e.target.value
+    setImages(updatedImages);
+    console.log(images);
+    setAns(e.target.value);
+  }
   function handleClick() {
     imageQueue.push(images[id]);
     setImageQueue([...imageQueue])
@@ -33,10 +41,18 @@ export default function Image({ src, id, yt_link , style}) {
   }
 
   return (
-    <div className = { hiddenImage === true ? ` ${classes.image} ${classes.hidden}`: `${classes.image}`} style={style}>
+    <div
+      className={
+        hiddenImage === true
+          ? ` ${classes.image} ${classes.hidden}`
+          : `${classes.image}`
+      }
+      style={style}
+    >
       <label onClick={handleClick}> {id + 1} </label>
       <img src={src["img_path"]} onClick={handleImageClick} />
-      <p onClick={() => setHiddenImage(!hiddenImage)}>{src['format']}</p>
+      <p onClick={() => setHiddenImage(!hiddenImage)}>{src["format"]}</p>
+      {<input type="text" className={ans === "" ? classes.hidden1:"" } onChange={handleAnswer}/>}
     </div>
   )
 }
