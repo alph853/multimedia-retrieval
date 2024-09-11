@@ -80,7 +80,7 @@ export default function Left() {
     .then((res) => setSearchResponse((s) => (s = JSON.parse(res.data))))
   }
   useEffect(() => {
-    setImages(Object.values(searchResponse).flat())
+    setImages(Object.values(searchResponse).flat());
     console.log(images)
   }, [searchResponse]);
   const detectKeyDown = (e) => {

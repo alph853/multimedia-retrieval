@@ -16,7 +16,7 @@ export default function Right() {
             <Image src={image} id={idx} yt_link={image.watch_url}></Image>
           ))}
         </div>
-      ): (
+      ) : (
         <div className={classes.imageContainer}>
           {imagesTemp.map((image, idx) => (
             <Image src={image} id={idx} yt_link={image.watch_url}></Image>
@@ -25,24 +25,49 @@ export default function Right() {
       )}
       <div className={classes.boxQueue}>
         {closeBoard ? (
-          <FaChevronLeft className={classes.chevron} onClick={() => {setCloseBoard(false)}}/>
+          <FaChevronLeft
+            className={classes.chevron}
+            onClick={() => {
+              setCloseBoard(false)
+            }}
+          />
         ) : (
-          <div style={{display: "flex", flexDirection: "row", backgroundColor: "transparent", alignItems: "center"}}>
-            <FaChevronRight className={classes.chevron} onClick={() => {setCloseBoard(true)}}/>
-              {imageQueue.length === 0 ? (null):(
-                <div style={{padding: "20px", backgroundColor: "#1a2330", borderRadius: "10px", marginRight: "30px"}}>
-                  <div className={classes.lstBox}>
-                    {imageQueue.map((image, idx) => (
-                      <Image
-                        key={idx}t
-                        src={image}
-                        id={idx}
-                        style={{ marginRight: "10px" }}
-                      />
-                    ))}
-                  </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              backgroundColor: "transparent",
+              alignItems: "center",
+            }}
+          >
+            <FaChevronRight
+              className={classes.chevron}
+              onClick={() => {
+                setCloseBoard(true)
+              }}
+            />
+            {imageQueue.length === 0 ? null : (
+              <div
+                style={{
+                  padding: "20px",
+                  backgroundColor: "#1a2330",
+                  borderRadius: "10px",
+                  marginRight: "30px",
+                }}
+              >
+                <div className={classes.lstBox}>
+                  {imageQueue.map((image, idx) => (
+                    <Image
+                      key={idx}
+                      t
+                      src={image}
+                      id={idx}
+                      style={{ marginRight: "10px" }}
+                    />
+                  ))}
                 </div>
-              )}
+              </div>
+            )}
           </div>
         )}
         

@@ -1,9 +1,9 @@
-.body{
+.body {
     width: 100vw;
     height: 100vh;
 }
 
-.image label{
+.image label {
     width: 30px;
     background-color: rgba(255, 255, 255, 0.54);
     border: none;
@@ -18,13 +18,9 @@
     cursor: pointer;
     margin: 0;
 }
-.image activate{
-    background-color: cadetblue;
-}
 
-.hidden{
-    /* display: none !important; */
-    opacity: 10%;
+.image.activate label {
+    background-color: cadetblue;
 }
 
 .image {
@@ -36,7 +32,7 @@
     background-color: transparent;
 }
 
-.image img{
+.image img {
     width: 220px;
     height: 124px;
     border-radius: 10px;
@@ -52,8 +48,7 @@
     left: 0;
 }
 
-
-.image p{
+.image p {
     position: absolute;
     margin: 0;
     width: 100%;
@@ -66,11 +61,35 @@
     font-weight: 600;
 }
 
-.image p:hover{
+.image p:hover {
     color: red;
 }
 
-.image img:hover{
+.image input {
+    position: absolute;
+    background-color: white;
+    color: #B53471;
+    left: 5px;
+    border-radius: 5px;
+    width: 100px;
+    top: 5px;
+    border: none;
+    outline: none;
+    padding: 5px;
+    font-weight: 600;
+
+}
+
+
+/* Brightness transition effect on hover */
+.image img:hover {
     -webkit-filter: brightness(100%);
 }
 
+.hidden1{
+    display: none;
+}
+
+.image:hover > input{
+    display: block !important;
+}
