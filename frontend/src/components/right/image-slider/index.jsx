@@ -5,7 +5,7 @@ import { FaChevronDown, FaChevronUp, FaDownload, FaRedo, FaSearchPlus, FaUndo } 
 import { FaRegCircleXmark } from "react-icons/fa6";
 
 export default function ImageSlider() {
-  const { images, selectedImage, setSelectedImage } = useContext(GlobalContext);
+  const { images, selectedImage, setSelectedImage, searchResponse, selectBtn} = useContext(GlobalContext);
 
   function handleImageClick(id) {
     setSelectedImage(id);
@@ -13,7 +13,7 @@ export default function ImageSlider() {
 
   function showPreviousImg() {
     if (selectedImage === 0) {
-      setSelectedImage(images.length - 1);
+      setSelectedImage(searchResponse[selectBtn].length - 1);
     } else {
       setSelectedImage(selectedImage - 1);
     }
@@ -21,7 +21,7 @@ export default function ImageSlider() {
   }
 
   function showNextImg() {
-    if (selectedImage === images.length - 1) {
+    if (selectedImage === searchResponse[selectBtn].length - 1) {
       setSelectedImage(0);
     } else {
       setSelectedImage(selectedImage + 1);
@@ -42,15 +42,15 @@ export default function ImageSlider() {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [selectedImage, images.length]);
+  }, [selectedImage, searchResponse[selectBtn].length]);
 
   return (
     <div className={classes.slider_container}>
       <div className={classes.data_container}>
         <div className={classes.image_left}>
-          <p>{images[selectedImage]['scene_id']}</p>
+          <p>{searchResponse[selectBtn][selectedImage]['scene_id']}</p>
           <div>
-            <img src={images[selectedImage]["img_path"]} />
+            <img src={searchResponse[selectBtn][selectedImage]["img_path"]} />
           </div>
           <div className={classes.btn_container}>
             <button onClick={showPreviousImg}>
@@ -63,7 +63,7 @@ export default function ImageSlider() {
         </div>
 
         <div className={classes.image_right}>
-          {images.map((image, idx) => (
+          {searchResponse[selectBtn].map((image, idx) => (
             <img
               key={idx}
               src={image['img_path']}
