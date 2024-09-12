@@ -7,6 +7,8 @@ import DrawInput from "./draw-input"
 import axios from "axios"
 import SideBar from "../../components/side-bar"
 import TagInput from "./tag-input"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 function render(type, prop) {
   switch (type) {
@@ -40,13 +42,14 @@ export default function Left() {
     setInputBox((i) => (i = inputBox.filter((_, idx) => idx !== selectedFrame)))
     setSelectedFrame(0)
   }
-  
+  const [loading,setLoading] = useState(false);
   const handleSearchBE = () => {
+    setLoading(true)
     const obj = {}
-    console.log("Fetch: ",inputBox)
-    inputBox.forEach((input,index)=>{
-      const key = (index+1).toString();
-      const { text, img_path, drawImg,tag } = input.data
+    console.log("Fetch: ", inputBox)
+    inputBox.forEach((input, index) => {
+      const key = (index + 1).toString()
+      const { text, img_path, drawImg, tag } = input.data
       obj[key] = {
         txt:text,
         img:img_path.length > 0? img_path : null,
@@ -69,22 +72,31 @@ export default function Left() {
         }:null
       }
     })
-    console.log(obj);
-  axios
-    .post("http://localhost:8000/search", {
-      number:numImg,
-      search_space_idx:[], 
-      number_of_frames:inputBox.length,
-      frame_info:obj,
-    })
-    .then((res) => setSearchResponse((s) => (s = JSON.parse(res.data))))
-  }
-  useEffect(() => {
-    setImages(Object.values(searchResponse).flat());
-    console.log(images)
-  }, [searchResponse]);
+    console.log(obj)
+
+    axios
+      .post("http://localhost:8000/search", {
+        number: numImg,
+        search_space_idx: [],
+        number_of_frames: inputBox.length,
+        frame_info: obj,
+      }
+    ) 
+      .then((res) => {
+        setSearchResponse((s) => JSON.parse(res.data))
+        toast.success("Search completed successfully!")
+      })
+      .catch((err) => {
+        console.error("Search failed:", err) // Optional: log the error for debugging
+        toast.error(
+          `Search failed: ${err.message || "An unknown error occurred"}`
+        )
+      })
+      .finally(() => {
+        setLoading(false) // Always reset loading state
+      })
+    }
   const detectKeyDown = (e) => {
-    console.log(e.key);
     if(e.ctrlKey && e.key ==='Enter'){
       e.preventDefault();
       handleSearchBE();
@@ -111,7 +123,7 @@ export default function Left() {
               marginTop: "20px"
             }}
           >
-            <div>
+            <div className={classes.select}>
               {inputBox.map((_, idx) => (
                 <button
                   className={ selectedFrame === idx ? `${classes.btn} ${classes.selected}` : `${classes.btn}` }

@@ -1,5 +1,5 @@
 .input{
-    height: 50vh;
+    height: 70vh;
     overflow-y: scroll;
     padding: 5px;
 }
@@ -259,4 +259,35 @@
 
 .inputNumber::-webkit-input-placeholder{
     color: black;
+}
+
+button:hover{
+    opacity: 80%;
+}
+
+.select{
+    width: 170px;
+    overflow-x: scroll;
+    flex-wrap: nowrap;
+    display: flex;
+    justify-content: start;
+    background: transparent;
+}
+
+
+.select::-webkit-scrollbar {
+    height: 5px;
+}
+
+.select::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.select::-webkit-scrollbar-thumb {
+    background-color: #324662b9;
+    border-radius: 5px;
+}
+
+.select::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
 }

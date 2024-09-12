@@ -1,21 +1,22 @@
 import {useContext, useState } from 'react';
 import classes from "./styles.module.css"
 import { GlobalContext } from "../../../context"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 export default function Bar(){
     const [inputValue, setInputValue ] = useState("")
     const [inputFilter, setInputFilter ] = useState("")
-    const {images, setImages ,imageQueue, setImageQueue, checkFilter, setCheckFilter, imagesTemp, setImageTemp,selector,setSelector} = useContext(GlobalContext)
+    const {images, setImages ,imageQueue, setImageQueue, checkFilter, setCheckFilter, imagesTemp, setImageTemp,selector,setSelector, searchResponse, setSearchResponse, selectBtn, setSelectBtn} = useContext(GlobalContext)
     function handleSubmitCsv(){
         const csvRows = []
 
-        images.forEach((image) => {
+        searchResponse[selectBtn].forEach((image) => {
           const [column1, column2] = image.format.split(", ")
           if(selector){
             csvRows.push(`${column1},${column2}`);
           }else{
-
-          if(image.answer!=="") csvRows.push(`${column1},${column2},${image.answer}`)
+            if(image.answer) csvRows.push(`${column1},${column2},${image.answer}`)
           }
         })
 
@@ -27,12 +28,12 @@ export default function Bar(){
         link.download = "output.csv"
         link.click()
         URL.revokeObjectURL(url)
+        toast.dark("File csv downloaded")
     }
     function handleImage() {
-        images.splice(inputValue - 1, 0, ...imageQueue);
-        console.log(images)
-        setImages([...images])
-        setImageQueue([])
+        searchResponse[selectBtn].splice(inputValue - 1, 0, ...imageQueue[selectBtn]);
+        setSearchResponse({...searchResponse})
+        setImageQueue({})
     }
 
     function filterArr(target, arr) {
@@ -47,7 +48,7 @@ export default function Bar(){
         }else setSelector(false);
     }
     function handleFilter() {
-        (checkFilter === false) ? setImageTemp(images) : null;
+        (checkFilter === false) ? setImageTemp(searchResponse[selectBtn]) : null;
         setCheckFilter(true)
         let i = 0
         const targetParts = inputFilter.split('/').filter(part => part !== '');
@@ -59,7 +60,7 @@ export default function Bar(){
 
     function noFilter(){
         setCheckFilter(false)
-        setImageTemp(images)
+        setImageTemp(searchResponse[selectBtn])
     }
     return (
       <div className={classes.bar}>

@@ -98,3 +98,26 @@
     background-color: transparent;
     height: fit-content;
 }
+
+.ulbtn {
+    padding: 0;
+    width: 100%;
+    margin: 5px 0px;
+}
+
+.ulbtn .btn {
+    background-color: #1a1e23c7;
+    border: none;
+    border-radius: 5px;
+    /* padding: 4px 10px; */
+    width: 35px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 20px 1px;
+    margin-right: 10px;
+}
+
+.ulbtn .selected{
+    background-color: #42474d93;
+}

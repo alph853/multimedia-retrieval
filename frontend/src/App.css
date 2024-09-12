@@ -9,15 +9,36 @@
   --bg-submit: #7eff75dd;
 }
 
+.Toastify__toast-body{
+  background-color: unset;
+  color: unset;
+}
 
+.Toastify__toast-body > div {
+  background-color: unset;
+  color: unset;
+}
+.Toastify__toast-icon{
+  color: unset;
+}
+
+.Toastify--animate-icon {
+  background-color: unset;
+}
 * {
   box-sizing: border-box;
   background-color: var(--primary-color-dark);
   color: white;
 }
 
+#root{
+  height: 100vh;
+  margin: 0;
+  box-sizing: border-box;
+  padding-top: 20px;
+}
 .app{
-  margin: 20px;
+  /* margin: 20px; */
   padding: 0px 10px;
   height: 100%;
   font-size: 15px;

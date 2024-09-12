@@ -6,6 +6,7 @@ export default function GlobalState({ children }) {
   const [images, setImages] = useState([])
   const [selector,setSelector] = useState(true)
   const [files, setFiles] = useState([])
+  const [selectBtn, setSelectBtn] = useState(null)
   const [inputBox, setInputBox] = useState([
     {
       render: ["text"],
@@ -29,13 +30,45 @@ export default function GlobalState({ children }) {
         format: "L10_V006, 15441",
         publish_date: "25/02/2024",
         watch_url: "https://youtube.com/watch?v=ZHsJ3eNoCvk&t=617s",
-<<<<<<< HEAD
         answer: "",
         timeframe: ""
-=======
-        answer:""
->>>>>>> ea28bda088b59ac73813a96634f4e84ee4ecf7d8
-      },
+      },{
+        img_path:
+          "https://i.pinimg.com/564x/6d/c3/47/6dc3470f6698bc499f95a034654b450c.jpg",
+        scene_id: "/L10/V006/196",
+        frm_number: "15441",
+        score: 0.4631200432777405,
+        frm_id: 272834,
+        format: "L10_V006, 15441",
+        publish_date: "25/02/2024",
+        watch_url: "https://youtube.com/watch?v=ZHsJ3eNoCvk&t=617s",
+        answer: "",
+        timeframe: ""
+      },{
+        img_path:
+          "https://i.pinimg.com/564x/6d/c3/47/6dc3470f6698bc499f95a034654b450c.jpg",
+        scene_id: "/L10/V006/196",
+        frm_number: "15441",
+        score: 0.4631200432777405,
+        frm_id: 272834,
+        format: "L10_V006, 15441",
+        publish_date: "25/02/2024",
+        watch_url: "https://youtube.com/watch?v=ZHsJ3eNoCvk&t=617s",
+        answer: "",
+        timeframe: ""
+      },{
+        img_path:
+          "https://i.pinimg.com/564x/6d/c3/47/6dc3470f6698bc499f95a034654b450c.jpg",
+        scene_id: "/L10/V006/196",
+        frm_number: "15441",
+        score: 0.4631200432777405,
+        frm_id: 272834,
+        format: "L10_V006, 15441",
+        publish_date: "25/02/2024",
+        watch_url: "https://youtube.com/watch?v=ZHsJ3eNoCvk&t=617s",
+        answer: "",
+        timeframe: ""
+      }
     ],
   })
   const [closeBoard, setCloseBoard] = useState(true)
@@ -45,9 +78,9 @@ export default function GlobalState({ children }) {
   const [canvasH,setCanvasH] = useState(0);
   const [canvasW,setCanvasW] = useState(0);
   const [imagesTemp, setImageTemp] =  useState(images)
-  const [imageQueue, setImageQueue] = useState([])
+  const [imageQueue, setImageQueue] = useState({})
   const [checkFilter, setCheckFilter ] = useState(false)
-  const [selectTag, setSelectTag] = useState([])
+  const [selectTag, setSelectTag] = useState({})
   function handleClick(event) {
     const value = event.currentTarget.getAttribute("data-value")
     if (
@@ -108,6 +141,8 @@ export default function GlobalState({ children }) {
         setSelectTag,
         selector,
         setSelector,
+        selectBtn, 
+        setSelectBtn
       }}
     >
       {children}

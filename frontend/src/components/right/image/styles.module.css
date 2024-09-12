@@ -93,3 +93,7 @@
 .image:hover > input{
     display: block !important;
 }
+
+.hidden{
+    opacity: 10%;
+}

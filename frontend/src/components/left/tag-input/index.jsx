@@ -21,18 +21,28 @@ export default function TagInput({ id }) {
   };
 
   const handleClick = (tag) => {
-    if (!selectTag.includes(tag)) {
-      setSelectTag([...selectTag, tag]);
+    const slTag = {...selectTag};
+    if (!slTag[selectedFrame]) {
+      slTag[selectedFrame] = []
     }
+    if (!slTag[selectedFrame].includes(tag)) {
+      slTag[selectedFrame].push(tag)
+    }
+    setSelectTag(slTag);
+    console.log(selectTag)
   };
 
   const handleRemoveTag = (index) => {
-    setSelectTag(prevTags => prevTags.filter((_, idx) => idx !== index));
+    // setSelectTag(prevTags => prevTags[selectedFrame].filter((_, idx) => idx !== index));\
+    const slTag = {...selectTag};
+    slTag[selectedFrame] = slTag[selectedFrame].filter((_, idx) => idx != index);
+    setSelectTag(slTag);
+    console.log(selectTag)
   };
 
   const handleExit = (e) => {
     removeInput(e)
-    setSelectTag([]);
+    setSelectTag({});
   };
 
   const handleSubmit = () => {
@@ -42,7 +52,7 @@ export default function TagInput({ id }) {
         ...updatedInputBox[selectedFrame],
         data: {
           ...updatedInputBox[selectedFrame].data,
-          tag: [...selectTag],
+          tag: selectTag[selectedFrame],
         },
       }
       return updatedInputBox
@@ -88,11 +98,11 @@ export default function TagInput({ id }) {
       <div className={classes.tagRight}>
         <div className={classes.tagRightSelect}>
           <ul>
-            {selectTag.map((tag, idx) => (
+            { (selectTag[selectedFrame]) && (selectTag[selectedFrame].map((tag, idx) => (
               <li key={tag} onClick={() => {handleRemoveTag(idx)}}>
                 {tag}
               </li>
-            ))
+            )))
             }
           </ul>
         </div>

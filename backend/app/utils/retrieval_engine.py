@@ -266,6 +266,7 @@ def map_ids_to_paths(id2img_fps: dict, all_frames_results, video_metadata):
             info['timeframe'] = timeframe
             info['publish_date'] = video_metadata[video_key]['publish_date']
             info['watch_url'] = video_metadata[video_key]['watch_url']
+            info['answer'] = ""
 
         result_paths[frame_id] = infos_query
 
