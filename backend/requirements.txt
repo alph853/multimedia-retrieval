@@ -7,7 +7,6 @@ rapidfuzz
 matplotlib
 opencv-python
 langdetect==1.0.9
-fastapi[standard]
 googletrans==3.1.0a0
 sentence_transformers
 transformers

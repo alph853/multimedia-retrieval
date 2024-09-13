@@ -104,7 +104,7 @@ export default function Left() {
   };
   useEffect(()=>{
     document.addEventListener('keydown',detectKeyDown,true)
-  },[])
+  })
   
   return (
     <div style={{height: "100%", display: "flex", justifyItems: "center", alignItems: "center"}}>

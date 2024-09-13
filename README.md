@@ -15,6 +15,7 @@ Then run:
 ```bash
 conda create -n multimedia-retrieval python=3.11 -y
 conda activate multimedia-retrieval
+conda install conda-forge::fastapi -y
 pip install -r requirements.txt 
 pip install git+https://github.com/openai/CLIP.git 
 conda install -c pytorch/label/nightly -c nvidia faiss-gpu -y

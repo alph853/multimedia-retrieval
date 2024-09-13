@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import classes from "./styles.module.css"
 import { GlobalContext } from "../../../context"
 import Skeleton from "react-loading-skeleton"
+// import image from "../../../../public/images/1.jpg"
 
 export default function Image({ src, id, yt_link , style}) {
   const { images,setImages, selectedImage, setSelectedImage, imageQueue, setImageQueue, selectBtn, setSelectBtn, searchResponse, setSearchResponse} = useContext(GlobalContext)
@@ -15,9 +16,9 @@ export default function Image({ src, id, yt_link , style}) {
   },[ans])
 
   function handleAnswer(e){
-    const updatedImages = [...images]
-    updatedImages[id].answer = e.target.value
-    setImages(updatedImages);
+    const updatedImages = {...searchResponse}
+    updatedImages[selectBtn][id].answer = e.target.value
+    setSearchResponse(updatedImages);
     console.log(images);
     setAns(e.target.value);
   }
@@ -38,14 +39,14 @@ export default function Image({ src, id, yt_link , style}) {
       e.preventDefault() // Prevent default behavior
       if (yt_link) {
         window.open(`${yt_link}`, "_blank") // Open the YouTube link in a new tab
-      } else {
+      } else { 
         console.error("YouTube link is not provided.")
       }
     } else {
       setSelectedImage(id)
     }
   }
-
+  // console.log(src["img_path"])
   return (
     <div
       className={
@@ -56,7 +57,9 @@ export default function Image({ src, id, yt_link , style}) {
       style={style}
     >
       <label onClick={handleClick}> {id + 1} </label>
-      <img src={src["img_path"]||<Skeleton/>} onClick={handleImageClick} />
+      <img src={"../../../../public/images/"+src['img_path']} onClick={handleImageClick}/>
+      {/* <img src={"../../../../../images/"+src["img_path"]} onClick={handleImageClick}/> */}
+      {/* <img src={src["img_path"]} onClick={handleImageClick} alt="webP rules."/> */}
       <p onClick={() => setHiddenImage(!hiddenImage)}>{src["format"]}</p>
       {
         <input

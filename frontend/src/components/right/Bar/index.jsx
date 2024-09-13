@@ -10,6 +10,8 @@ export default function Bar(){
     const {images, setImages ,imageQueue, setImageQueue, checkFilter, setCheckFilter, imagesTemp, setImageTemp,selector,setSelector, searchResponse, setSearchResponse, selectBtn, setSelectBtn} = useContext(GlobalContext)
     function handleSubmitCsv(){
         const csvRows = []
+        
+        console.log(searchResponse)
 
         searchResponse[selectBtn].forEach((image) => {
           const [column1, column2] = image.format.split(", ")

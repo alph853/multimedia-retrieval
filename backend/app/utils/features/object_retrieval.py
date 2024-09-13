@@ -6,7 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from timeit import default_timer as timer
 import faiss
 from .configs import PROJECT_ROOT
-from .utils import merge_list_results
+from .utils import merge_list_results, encode_tfidf
 
 
 class ObjectRetrieval:
@@ -89,21 +89,13 @@ class ObjectRetrieval:
                 - top_k_indices (array-like): The indices of the top k results with shape (n_query, k).
         """
         query = self.preprocess(query)
-        query_vector = self.encode(query, self.tfidf_transformers[type])
-
         if type in self.sparse_context_types:
-            scores = self.context_matrix[type].dot(query_vector.T).toarray()
-            top_k_indices = np.argsort(scores, axis=1)[:, ::-1][:, :k]
-            scores = np.take_along_axis(scores, top_k_indices, axis=1)
+            scores, top_k_indices = encode_tfidf(query, self.tfidf_transformers[type], self.context_matrix[type], k)
         else:
             query_vector = query_vector.toarray().astype(np.float32)
             scores, top_k_indices = self.context_matrix[type].search(query_vector, k)
 
         return scores, top_k_indices
-
-    @staticmethod
-    def encode(query: list[str], transform: TfidfVectorizer):
-        return transform.transform(query)
 
     @staticmethod
     def preprocess(query: list[str]):

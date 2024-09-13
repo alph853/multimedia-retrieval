@@ -6,7 +6,7 @@ import json
 import numpy as np
 from .features import (
     ClipRetrieval, ObjectRetrieval, OcrRetrieval, SpeechRetrieval,
-    TagRetrieval, TagAssistant, PromptAssistant, PROJECT_ROOT,
+    TagRetrieval, TagAssistant, PromptAssistant, PROJECT_ROOT, ROOT,
     merge_list_results
 )
 
@@ -63,7 +63,7 @@ class RetrievalEngine:
         self.id2img_fps = load_json_int_key(os.path.join(PROJECT_ROOT, id2img_fps))
         self.features = self.feature_retrievers.keys()
         self.query_types = ['txt', 'img', 'idx', 'tag', 'ocr', 'obj', 'asr']
-        self.method_type = 1
+        self.method_type = 0
 
     def __call__(self, frame_number: int, frame_info: dict, k: int):
         query, query_info = frame_info_to_query(self.features, frame_info)
@@ -251,22 +251,25 @@ def map_ids_to_paths(id2img_fps: dict, all_frames_results, video_metadata):
             info['score'] = score
             info['frm_id'] = index
 
-            video_key = info['img_path'].split('/')
+            video_key = info['scene_id'].split('/')
             video_key = f'{video_key[1]}_{video_key[2]}'
             format = f"{video_key}, {info['frm_number']}"
             fps = video_metadata[video_key]['fps']
 
-            timeframe = (float(info['frm_number']) / (fps*60))
-            minute = int(timeframe)
-            second = int((timeframe - minute)*60)
-            timeframe = f'{minute:02}:{second:02}'
-
-            # info['img_path'] = info['img_path']
+            timeframe = int(info['frm_number']) // int(fps)
             info['format'] = format
             info['timeframe'] = timeframe
             info['publish_date'] = video_metadata[video_key]['publish_date']
-            info['watch_url'] = video_metadata[video_key]['watch_url']
+            info['watch_url'] = video_metadata[video_key]['watch_url'] + f'&t={timeframe}s'
             info['answer'] = ""
+            
+            
+            # if 'images' not in info['img_path']:
+            #     print(ROOT)
+            #     info['img_path'] = os.path.join(ROOT, 'images', info['img_path'])
+            #     if not os.path.exists(info['img_path']):
+            #         print("Image not found: ", info['img_path'])
+            
 
         result_paths[frame_id] = infos_query
 

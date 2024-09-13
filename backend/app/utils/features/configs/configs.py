@@ -17,4 +17,3 @@ def GET_PROJECT_ROOT(root: str) -> str:
 ROOT = GET_PROJECT_ROOT('multimedia-retrieval')
 PROJECT_ROOT = os.path.join(ROOT, 'backend', 'app')
 FRONTEND_ROOT = os.path.join(ROOT, 'frontend')
-

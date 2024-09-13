@@ -80,6 +80,9 @@ class ClipRetrieval:
                 results[key] = (scores[start_idx:end_idx], indices[start_idx:end_idx])
                 start_idx = end_idx
 
+                if key == 'txt':
+                    for i, score in enumerate(scores):
+                        scores[i] = score / np.max(score)
         return results
 
     def encode_text(self, txt_query: list[str]):
@@ -99,10 +102,10 @@ class ClipRetrieval:
     def reconstruct(self, ids: list[int]):
         recon_vectors = []
         for id in ids:
-            recon = self.faiss_index.reconstruct(id).reshape(1, -1)
+            recon = self.faiss_index.reconstruct(id)
             recon_vectors.append(recon)
 
-        recon_tensor = torch.tensor(recon_vectors).to(self.device)
+        recon_tensor = torch.tensor(np.array(recon_vectors)).to(self.device)
         return recon_tensor
 
     def search(self, query: np.ndarray, k: int):

@@ -19,15 +19,17 @@ def check_invalid_request(q):
     q.number = max(min(q.number, MAX_K), 1)
     q.number_of_frames = max(min(q.number_of_frames, MAX_NUMBER_OF_FRAMES), 1)
 
-    for frame_id in frame_info:
-        if not frame_info[frame_id]['tag']:
-            frame_info[frame_id]['tag'] = None
-        if not frame_info[frame_id]['idx']:
-            frame_info[frame_id]['idx'] = None
+    for frame_id in list(frame_info.keys()):
+        for feature in ('tag', 'idx', 'txt', 'img', 'ocr', 'obj', 'asr'):
+            if not frame_info[frame_id][feature]:
+                frame_info[frame_id][feature] = None
         if all(v is None for v in frame_info[frame_id].values()):
             q.number_of_frames -= 1
             del frame_info[frame_id]
 
+    if q.number_of_frames == 0:
+        return ("All frame_info has no information")
+    
     return None
 
 
