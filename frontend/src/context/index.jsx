@@ -1,4 +1,5 @@
 import { createContext, useRef, useState } from "react"
+import { allKeyFrame } from "../context/all_key_frame";
 
 export const GlobalContext = createContext(null)
 
@@ -39,7 +40,7 @@ export default function GlobalState({ children }) {
         frm_number: "15441",
         score: 0.4631200432777405,
         frm_id: 272834,
-        format: "L10_V006, 15441",
+        format: "L11_V006, 15441",
         publish_date: "25/02/2024",
         watch_url: "https://youtube.com/watch?v=ZHsJ3eNoCvk&t=617s",
         answer: "",
@@ -47,7 +48,7 @@ export default function GlobalState({ children }) {
       },{
         img_path:
           "https://i.pinimg.com/564x/6d/c3/47/6dc3470f6698bc499f95a034654b450c.jpg",
-        scene_id: "/L10/V006/196",
+        scene_id: "/L12/V006/196",
         frm_number: "15441",
         score: 0.4631200432777405,
         frm_id: 272834,
@@ -59,7 +60,7 @@ export default function GlobalState({ children }) {
       },{
         img_path:
           "https://i.pinimg.com/564x/6d/c3/47/6dc3470f6698bc499f95a034654b450c.jpg",
-        scene_id: "/L10/V006/196",
+        scene_id: "/L14/V006/196",
         frm_number: "15441",
         score: 0.4631200432777405,
         frm_id: 272834,
@@ -142,7 +143,8 @@ export default function GlobalState({ children }) {
         selector,
         setSelector,
         selectBtn, 
-        setSelectBtn
+        setSelectBtn,
+        allKeyFrame
       }}
     >
       {children}

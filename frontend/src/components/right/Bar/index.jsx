@@ -56,6 +56,7 @@ export default function Bar(){
         const targetParts = inputFilter.split('/').filter(part => part !== '');
         while (i < targetParts.length) {
             setImageTemp(filterArr(targetParts[i], imagesTemp));
+            console.log(targetParts[i])
             i += 1
         }
     }
