@@ -36,23 +36,23 @@ export default function SideBar() {
               ])
             }
           }}
-          style={{background : "black"}}
+          style={{ background: "black" }}
         ></FaPlus>
       </p>
       <p data-value="text" onClick={handleClick}>
-        <FaCommentAlt style={{background : "black"}}></FaCommentAlt>
+        <FaCommentAlt style={{ background: "black" }}></FaCommentAlt>
       </p>
       <p data-value="image" onClick={handleClick}>
-        <FaImage style={{background : "black"}}></FaImage>
+        <FaImage style={{ background: "black" }}></FaImage>
       </p>
       <p data-value="tag" onClick={handleClick}>
-        <FaTags style={{background : "black"}}></FaTags>
+        <FaTags style={{ background: "black" }}></FaTags>
       </p>
       <p>
-        <FaCloud style={{background : "black"}}></FaCloud>
+        <FaCloud style={{ background: "black" }}></FaCloud>
       </p>
-      <p>
-        <FaExpand style={{background : "black"}}></FaExpand>
+      <p data-value="ocr" onClick={handleClick}>
+        <FaExpand style={{ background: "black" }}></FaExpand>
       </p>
     </div>
   )

@@ -15,6 +15,7 @@ export default function GlobalState({ children }) {
         img_path: "",
         drawImg:[],
         tag: [],
+        ocr:""
       },
     },
   ])
@@ -95,6 +96,7 @@ export default function GlobalState({ children }) {
     } else {
       alert("Only one for each frame")
     }
+    console.log(inputBox)
   }
   function removeInput(event) {
     const deleteId = parseInt(event.currentTarget.getAttribute("cur-id"))
