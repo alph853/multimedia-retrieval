@@ -3,6 +3,7 @@ import { createContext, useRef, useState } from "react"
 export const GlobalContext = createContext(null)
 
 export default function GlobalState({ children }) {
+  const [fileName,setFileName] = useState("");
   const [images, setImages] = useState([])
   const [selector,setSelector] = useState(true)
   const [files, setFiles] = useState([])
@@ -143,8 +144,10 @@ export default function GlobalState({ children }) {
         setSelectTag,
         selector,
         setSelector,
-        selectBtn, 
-        setSelectBtn
+        selectBtn,
+        setSelectBtn,
+        fileName,
+        setFileName,
       }}
     >
       {children}

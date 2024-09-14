@@ -23,7 +23,7 @@ export default function OcrInput({ id }) {
       <textarea
         name="text-input-user"
         onChange={handleInputChange}
-        value={inputBox[selectedFrame].data.text}
+        value={inputBox[selectedFrame].data.ocr}
       />
       <div
         style={{

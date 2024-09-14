@@ -78,7 +78,7 @@ export default function Left() {
     console.log(obj)
 
     axios
-      .post("http://localhost:8000/search", {
+      .post("https://shrew-useful-unduly.ngrok-free.app/search", {
         number: numImg,
         search_space_idx: [],
         number_of_frames: inputBox.length,
@@ -100,10 +100,10 @@ export default function Left() {
       })
     }
   const detectKeyDown = (e) => {
-    if(e.ctrlKey && e.key ==='Enter'){
-      e.preventDefault();
-      handleSearchBE();
-    }
+    // if(e.ctrlKey && e.key ==='Enter'){
+    //   e.preventDefault();
+    //   handleSearchBE();
+    // }
   };
   useEffect(()=>{
     document.addEventListener('keydown',detectKeyDown,true)
