@@ -1,32 +1,37 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../../context";
 import classes from './styles.module.css';
 import { FaChevronDown, FaChevronUp, FaDownload, FaRedo, FaSearchPlus, FaUndo } from "react-icons/fa";
 import { FaRegCircleXmark } from "react-icons/fa6";
 
 export default function ImageSlider() {
-  const { images, selectedImage, setSelectedImage, searchResponse, selectBtn} = useContext(GlobalContext);
+  const { images, selectedImage, setSelectedImage, searchResponse, selectBtn, allKeyFrame} = useContext(GlobalContext);
+  const [,LX, VX, ] = searchResponse[selectBtn][selectedImage]['scene_id'].split('/');
+
+  const arrayScroll = allKeyFrame[LX][VX].sort()
+  // console.log(searchResponse[selectBtn][selectedImage])
+  const [select, setSelect] = useState(arrayScroll.indexOf(`public/images${searchResponse[selectBtn][selectedImage]['img_path']}`))
 
   function handleImageClick(id) {
-    setSelectedImage(id);
+    setSelect(id);
   }
 
   function showPreviousImg() {
-    if (selectedImage === 0) {
-      setSelectedImage(searchResponse[selectBtn].length - 1);
+    if (select === 0) {
+      setSelect(arrayScroll.length - 1);
     } else {
-      setSelectedImage(selectedImage - 1);
+      setSelect(select - 1);
     }
-    console.log(selectedImage)
+    console.log(select)
   }
 
   function showNextImg() {
-    if (selectedImage === searchResponse[selectBtn].length - 1) {
-      setSelectedImage(0);
+    if (select === arrayScroll.length - 1) {
+      setSelect(0);
     } else {
-      setSelectedImage(selectedImage + 1);
+      setSelect(select + 1);
     }
-    console.log(selectedImage)
+    console.log(select)
   }
 
   useEffect(() => {
@@ -37,20 +42,22 @@ export default function ImageSlider() {
         showPreviousImg();
       }
     }
-
+    console.log(LX)
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [selectedImage, searchResponse[selectBtn].length]);
+  }, [select, arrayScroll.length]);
+
+
 
   return (
     <div className={classes.slider_container}>
       <div className={classes.data_container}>
         <div className={classes.image_left}>
-          <p>{searchResponse[selectBtn][selectedImage]['scene_id']}</p>
+          <p>{arrayScroll[select]}</p>
           <div>
-            <img src={searchResponse[selectBtn][selectedImage]["img_path"]} />
+            <img src={arrayScroll[select]} style={{height: "500px"}}/>
           </div>
           <div className={classes.btn_container}>
             <button onClick={showPreviousImg}>
@@ -63,12 +70,12 @@ export default function ImageSlider() {
         </div>
 
         <div className={classes.image_right}>
-          {searchResponse[selectBtn].map((image, idx) => (
+          {arrayScroll.map((image, idx) => (
             <img
               key={idx}
-              src={image['img_path']}
+              src={`./${image}`}
               className={
-                idx === selectedImage
+                idx === select
                   ? `${classes.selected} ${classes.img}`
                   : classes.img
               }
