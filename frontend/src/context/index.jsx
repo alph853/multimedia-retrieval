@@ -4,6 +4,7 @@ import { allKeyFrame } from "../context/all_key_frame";
 export const GlobalContext = createContext(null)
 
 export default function GlobalState({ children }) {
+  const [fileName,setFileName] = useState("");
   const [images, setImages] = useState([])
   const [selector,setSelector] = useState(true)
   const [files, setFiles] = useState([])
@@ -16,6 +17,7 @@ export default function GlobalState({ children }) {
         img_path: "",
         drawImg:[],
         tag: [],
+        ocr:""
       },
     },
   ])
@@ -96,6 +98,7 @@ export default function GlobalState({ children }) {
     } else {
       alert("Only one for each frame")
     }
+    console.log(inputBox)
   }
   function removeInput(event) {
     const deleteId = parseInt(event.currentTarget.getAttribute("cur-id"))
@@ -144,7 +147,9 @@ export default function GlobalState({ children }) {
         setSelector,
         selectBtn, 
         setSelectBtn,
-        allKeyFrame
+        allKeyFrame,
+        fileName,
+        setFileName,
       }}
     >
       {children}

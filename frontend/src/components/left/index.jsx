@@ -9,6 +9,7 @@ import SideBar from "../../components/side-bar"
 import TagInput from "./tag-input"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import OcrInput from "./ocr-input"
 
 function render(type, prop) {
   switch (type) {
@@ -18,6 +19,8 @@ function render(type, prop) {
       return <DrawInput id={prop} style = {{with: "500px"}}/>
     case "tag":
       return <TagInput id={prop} style = {{with: "500px"}}/>
+    case "ocr":
+      return <OcrInput id={prop} style={{ with: "500px" }} />
     default:
       return null
   }
@@ -49,11 +52,11 @@ export default function Left() {
     console.log("Fetch: ", inputBox)
     inputBox.forEach((input, index) => {
       const key = (index + 1).toString()
-      const { text, img_path, drawImg, tag } = input.data
+      const { text, img_path, drawImg, tag,ocr} = input.data
       obj[key] = {
         txt:text,
         img:img_path.length > 0? img_path : null,
-        ocr:null,
+        ocr:ocr==""?null:ocr,
         idx:null,
         tag:tag?tag:null,
         asr:null,
@@ -97,10 +100,10 @@ export default function Left() {
       })
     }
   const detectKeyDown = (e) => {
-    if(e.ctrlKey && e.key ==='Enter'){
-      e.preventDefault();
-      handleSearchBE();
-    }
+    // if(e.ctrlKey && e.key ==='Enter'){
+    //   e.preventDefault();
+    //   handleSearchBE();
+    // }
   };
   useEffect(()=>{
     document.addEventListener('keydown',detectKeyDown,true)

@@ -22,6 +22,7 @@ class TagRetrieval:
         query = preprocess(q)
         scores, top_k_indices = encode_tfidf(query, self.tfidf_transformer, self.tags_matrix, k)
 
+        print(scores.shape, top_k_indices.shape)
         return scores, top_k_indices
 
     # def check(self, tags_matrix):

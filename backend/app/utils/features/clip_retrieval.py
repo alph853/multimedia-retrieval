@@ -33,7 +33,7 @@ class ClipRetrieval:
     def __init__(
         self,
         clip_model_info: str = os.path.join(PROJECT_ROOT, "dict/clip/clip_model_info.json"),
-        faiss_device: str = "cpu",
+        faiss_device: str = "cuda",
     ):
         self.model_info = json.load(open(clip_model_info, 'r'))
         self.model_keys = sorted(self.model_info.keys())

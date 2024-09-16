@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css"
 export default function Bar(){
     const [inputValue, setInputValue ] = useState("")
     const [inputFilter, setInputFilter ] = useState("")
-    const {images, setImages ,imageQueue, setImageQueue, checkFilter, setCheckFilter, imagesTemp, setImageTemp,selector,setSelector, searchResponse, setSearchResponse, selectBtn, setSelectBtn} = useContext(GlobalContext)
+    const {fileName,setFileName,images, setImages ,imageQueue, setImageQueue, checkFilter, setCheckFilter, imagesTemp, setImageTemp,selector,setSelector, searchResponse, setSearchResponse, selectBtn, setSelectBtn} = useContext(GlobalContext)
     function handleSubmitCsv(){
         const csvRows = []
         
@@ -27,7 +27,7 @@ export default function Bar(){
         const url = URL.createObjectURL(blob)
         const link = document.createElement("a")
         link.href = url
-        link.download = "output.csv"
+        link.download = fileName==""?"output.csv":`${fileName}.csv`
         link.click()
         URL.revokeObjectURL(url)
         toast.dark("File csv downloaded")
@@ -56,7 +56,6 @@ export default function Bar(){
         const targetParts = inputFilter.split('/').filter(part => part !== '');
         while (i < targetParts.length) {
             setImageTemp(filterArr(targetParts[i], imagesTemp));
-            console.log(targetParts[i])
             i += 1
         }
     }
@@ -88,9 +87,17 @@ export default function Bar(){
             }}
             style={{ width: "90px" }}
           />
+          <input
+            type="text"
+            placeholder="File name"
+            value={fileName}
+            onChange={(e) => setFileName(e.target.value)}
+            style={{width:'100px',marginLeft:'10px'}}
+          />
           <button style={{ marginLeft: "10px" }} onClick={handleFilter}>
             Filter
           </button>
+
           {checkFilter ? (
             <button
               style={{ marginLeft: "10px", backgroundColor: "var(--bg-reset)" }}
