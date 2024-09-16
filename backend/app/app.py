@@ -111,3 +111,7 @@ async def get_assistant(a: GetAssistant):
 @app.get("/checkocr/{frame_id}")
 async def check_ocr(frame_id: int):
     return OCR[frame_id]
+
+@app.get("/get_frame_number/{batch_key}/{frame_key}/{filename}")
+async def get_frame_info(batch_key, frame_key, filename):
+    return retrieval_engine.get_frame_info(batch_key, frame_key, filename)

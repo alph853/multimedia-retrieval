@@ -107,17 +107,29 @@ height: 100px;
     font-size: 20px;
     border: none;
     background-color: transparent;
-    color: white;
+    /* color: white; */
     cursor: pointer;
     padding: 10px;
     align-items: center;
     justify-content: center;
 }
 
+.image_footer button:checked{
+  margin: 10px 0;
+  font-size: 20px;
+  border: none;
+  background-color: transparent;
+  /* color: white; */
+  cursor: pointer;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+}
+/* 
 .image_footer button:hover{
     border-radius: 5px;
     background-color: #232023;  
-}
+} */
 
 .close{
   position: absolute;

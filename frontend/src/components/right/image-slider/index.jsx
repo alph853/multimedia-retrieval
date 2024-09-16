@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../../context";
 import classes from './styles.module.css';
-import { FaChevronDown, FaChevronUp, FaDownload, FaRedo, FaSearchPlus, FaUndo } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { FaRegCircleXmark } from "react-icons/fa6";
 
 export default function ImageSlider() {
@@ -9,8 +9,9 @@ export default function ImageSlider() {
   const [,LX, VX, ] = searchResponse[selectBtn][selectedImage]['scene_id'].split('/');
 
   const arrayScroll = allKeyFrame[LX][VX].sort()
-  // console.log(searchResponse[selectBtn][selectedImage])
-  const [select, setSelect] = useState(arrayScroll.indexOf(`public/images${searchResponse[selectBtn][selectedImage]['img_path']}`))
+  console.log(arrayScroll)
+  console.log(searchResponse[selectBtn][selectedImage]['img_path'])
+  const [select, setSelect] = useState(arrayScroll.indexOf(searchResponse[selectBtn][selectedImage]['img_path'].slice(1)))
 
   function handleImageClick(id) {
     setSelect(id);
@@ -57,7 +58,7 @@ export default function ImageSlider() {
         <div className={classes.image_left}>
           <p>{arrayScroll[select]}</p>
           <div>
-            <img src={arrayScroll[select]} style={{height: "500px"}}/>
+            <img src={`./public/images/${arrayScroll[select]}`} style={{height: "500px"}}/>
           </div>
           <div className={classes.btn_container}>
             <button onClick={showPreviousImg}>
@@ -73,7 +74,7 @@ export default function ImageSlider() {
           {arrayScroll.map((image, idx) => (
             <img
               key={idx}
-              src={`./${image}`}
+              src={`./public/images/${image}`}
               className={
                 idx === select
                   ? `${classes.selected} ${classes.img}`
@@ -86,20 +87,7 @@ export default function ImageSlider() {
       </div>
 
       <div className={classes.image_footer}>
-        <button>
-          <FaDownload style={{ backgroundColor: "transparent" }} />
-        </button>
-        <div style={{ backgroundColor: "transparent" }}>
-          <button>
-            <FaUndo style={{ backgroundColor: "transparent" }} />
-          </button>
-          <button>
-            <FaRedo style={{ backgroundColor: "transparent" }} />
-          </button>
-        </div>
-        <button>
-          <FaSearchPlus style={{ backgroundColor: "transparent" }} />
-        </button>
+        <button type="checkbox" style={{width: "30px", background: "white"}}/>
       </div>
 
       <div className={classes.close}>
