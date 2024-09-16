@@ -121,8 +121,8 @@ async def get_frame_info(batch_key, frame_key, file_name):
     return retrieval_engine.get_frame_info(batch_key, frame_key, file_name)
     
 @app.get("/get_output_by_timeframe/{batch_key}/{frame_key}/{timeframe}")
-async def get_output_by_timeframe(batch_key, frame_key, timeframe):
-    return retrieval_engine.get_output_by_timeframe(batch_key, frame_key, timeframe)    
+async def get_output_by_timeframe(batch_key, video_key, timeframe):
+    return retrieval_engine.get_output_by_timeframe(batch_key, video_key, timeframe)    
 
 @app.get("/get_history/{question_number}")
 async def get_history_result_by_question(question_number: int):
