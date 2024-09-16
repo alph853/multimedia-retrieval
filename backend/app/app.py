@@ -8,7 +8,7 @@ from typing import List, Dict, Any
 from PIL import Image
 import io
 
-from utils import (RetrievalEngine, Assistant,
+from utils import (RetrievalEngine,
                    check_invalid_request, parse_object_retrieval_request,
                    OCR
                    )
@@ -28,7 +28,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-assistant = Assistant()
 retrieval_engine = RetrievalEngine()
 
 
@@ -53,7 +52,12 @@ class GetAssistant(BaseModel):
     type: str
     query: str | List[str]
     num_tags: int = 15
-    num_prompts: int = 3
+    
+    
+class HistoryQuery(BaseModel):
+    filename: str
+    request: Query
+    csv_content: list[str]
 
 
 class Feedback(Query):
@@ -99,7 +103,7 @@ async def filter():
 @app.post("/assistant")
 async def get_assistant(a: GetAssistant):
     if a.type == 'tag':
-        return assistant.tag_assistant(a.query, a.num_tags)
+        return retrieval_engine.get_tag_assistant(a.query, a.num_tags)
 
 # while True:
 #     query = json.load(open(f'example.json', encoding='utf-8'))
@@ -111,3 +115,23 @@ async def get_assistant(a: GetAssistant):
 @app.get("/checkocr/{frame_id}")
 async def check_ocr(frame_id: int):
     return OCR[frame_id]
+
+@app.get("/get_frame_info/{batch_key}/{frame_key}/{file_name}")
+async def get_frame_info(batch_key, frame_key, file_name):
+    return retrieval_engine.get_frame_info(batch_key, frame_key, file_name)
+    
+@app.get("/get_output_by_timeframe/{batch_key}/{frame_key}/{timeframe}")
+async def get_output_by_timeframe(batch_key, frame_key, timeframe):
+    return retrieval_engine.get_output_by_timeframe(batch_key, frame_key, timeframe)    
+
+@app.get("/get_history/{question_number}")
+async def get_history_result_by_question(question_number: int):
+    return retrieval_engine.get_history_result_by_question(question_number=question_number)
+
+@app.post("/add_history")
+async def add_to_history(history: HistoryQuery):
+    return retrieval_engine.add_to_history(history.filename, history.request, history.csv_content)
+    
+@app.get("/get_history")
+async def get_history():
+    return retrieval_engine.get_history()

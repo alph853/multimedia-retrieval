@@ -5,7 +5,7 @@ import torch
 from sentence_transformers import SentenceTransformer, util
 
 
-SENTENCE_TRANSFORMER_MODELS = 'all-mpnet-base-v2'
+SENTENCE_TRANSFORMER_MODELS = 'all-MiniLM-L6-v2'
 
 
 class SentenceTransformerModel:

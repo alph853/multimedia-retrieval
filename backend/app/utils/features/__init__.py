@@ -1,4 +1,4 @@
-from .configs import PROJECT_ROOT, ROOT
+from .configs import PROJECT_ROOT, ROOT, translator
 from .assistant import TagAssistant, PromptAssistant
 from .clip_retrieval import ClipRetrieval
 from .object_retrieval import ObjectRetrieval

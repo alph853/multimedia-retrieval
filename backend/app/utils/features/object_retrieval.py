@@ -72,7 +72,7 @@ class ObjectRetrieval:
             scores_all_types.append(scores)
             indices_all_types.append(top_k_indices)
 
-        results = merge_list_results(scores_all_types, indices_all_types, k)
+        results = merge_list_results(scores_all_types, indices_all_types, k, normalize=True)
         return results
 
     def search(self, query: list[str], k: int, type: str):

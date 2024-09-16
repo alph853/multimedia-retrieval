@@ -3,7 +3,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import scipy as sp
 
 
-def merge_list_results(list_scores, list_indices, k):
+def merge_list_results(list_scores, list_indices, k, normalize=False):
     """Merge all lists of scores and indices IN A FRAME to a single list of scores and indices
 
     Args:
@@ -28,7 +28,8 @@ def merge_list_results(list_scores, list_indices, k):
     # print(sorted(result_dict.items(), key=lambda x: x[1], reverse=True))
 
     idx_image, scores = zip(*sorted(result_dict.items(), key=lambda x: x[1], reverse=True))
-    # scores = (scores - np.min(scores)) / (np.ptp(scores) + 1e-6)
+    if normalize:
+        scores = (scores - np.min(scores)) / (np.ptp(scores) + 1e-6)
     return scores[:k], idx_image[:k]
 
 
@@ -37,7 +38,7 @@ def merge_list_results(list_scores, list_indices, k):
 
 # print(merge_list_results(list_scores, list_indices, 3))
 
-def encode_tfidf(query: list[str], transform: TfidfVectorizer, tags_matrix: sp.sparse.csr_matrix, k: int = 100):
+def encode_tfidf(query: list[list[str]], transform: TfidfVectorizer, tags_matrix: sp.sparse.csr_matrix, k: int = 100):
     scores = []
     for single_frame_query in query:
         query_vector = transform.transform(single_frame_query)
