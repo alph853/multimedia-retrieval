@@ -37,7 +37,7 @@ class ClipRetrieval:
     ):
         self.model_info = json.load(open(clip_model_info, 'r'))
         self.model_keys = sorted(self.model_info.keys())
-        self.active_model = self.model_keys[1]
+        self.active_model = self.model_keys[0]
         self.faiss_device = faiss_device
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

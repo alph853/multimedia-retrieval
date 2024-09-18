@@ -7,19 +7,11 @@ import json
 import numpy as np
 from .features import (
     ClipRetrieval, ObjectRetrieval, OcrRetrieval, SpeechRetrieval,
-    TagRetrieval, TagAssistant, PromptAssistant, PROJECT_ROOT, ROOT,
+    TagRetrieval, TagAssistant, PromptAssistant, PROJECT_ROOT,
     merge_list_results, translator
 )
 
 from timeit import default_timer as timer
-
-class History:
-    def __init__(self, filename: str, query_type: str, request: dict, csv_content: list[str]):
-        self.filename = filename
-        self.request = request
-        self.csv_content = csv_content
-        self.query_type = query_type
-
 
 class RetrievalEngine:
     """
@@ -75,6 +67,7 @@ class RetrievalEngine:
         self.translator = translator
         
         self.history = {}
+        self.queries = {}
 
     def __call__(self, frame_number: int, frame_info: dict, k: int):
         query, query_info = frame_info_to_query(self.features, frame_info)
@@ -99,18 +92,17 @@ class RetrievalEngine:
             all_filename = self.all_video_info[batch][video]['files']
             index_filename = all_filename.index(filename)
         except ValueError:
-            # Handle the case where filename is not found
             return -1
         
-        index_filename = self.all_video_info[batch][video]["files"][index_filename]
+        # index_filename = self.all_video_info[batch][video]["files"][index_filename]
         
-        idx_frm = 0;
+        idx_frm = 0
         for batch_key in sorted(self.all_video_info.keys()):
             for video_key in sorted(self.all_video_info[batch_key].keys()):
                 if batch_key == batch and video_key == video:
                     idx_frm += index_filename
                     return idx_frm
-                idx_frm += (self.all_video_info[batch_key][video_key]["files"][-1] + 1 )
+                idx_frm += (len(self.all_video_info[batch_key][video_key]["files"]))
                 
         return -1
     
@@ -131,7 +123,7 @@ class RetrievalEngine:
                 nearest_frm_number = after if after - frm_number < frm_number - before else before
             
             index_frm_number = all_frame_numbers.index(nearest_frm_number)
-        
+            
         frame_id = 0
         for batch_key in sorted(self.all_video_info.keys()):
             for video_key in sorted(self.all_video_info[batch_key].keys()):
@@ -167,32 +159,45 @@ class RetrievalEngine:
         return info
     
     def add_to_history(self, filename, request, csv_content): 
-        file_info = filename.split('-')
-        question_number = int(file_info[2])
-        query_type = file_info[3]
+        os.makedirs(os.path.join(PROJECT_ROOT, 'utils/history'), exist_ok=True)
         
-        self.history[question_number] = History(
-            filename=filename,
-            request=request,
-            csv_content=csv_content,
-            query_type=query_type
-        )
+        if self.queries.get(filename) is None:
+            return f"The filename {filename} is not found in the uploaded queries"
         
+        if 'qa' in filename:
+            if csv_content and len(csv_content[0].split(',')) == 2:
+                return "Invalid csv content"    
+        
+        self.history[filename] = {
+            'request': request,
+        }
+        
+        with open(os.path.join(PROJECT_ROOT, 'utils/history', f'{filename}.csv'), 'w') as f:
+            f.write('\n'.join(csv_content))
+            
         return "Add to history successfully"
         
-        
     def get_history(self):
-        return {question_num: self.history[question_num] for question_num in sorted(self.history.keys())}
+        return list(self.queries.keys())
     
-    def get_history_result_by_question(self, question_number):
-        if question_number not in self.history.keys():
-            return None
+    def get_history_result_by_question(self, filename):
+        filepath = os.path.join(PROJECT_ROOT, 'utils/history', f'{filename}.csv')
         
-        all_results = self.history[question_number].csv_content
-        query_type = self.history[question_number].query_type
+        if os.path.exists(filepath):
+            csv_content = open(filepath, 'r').read().split('\n')
+            if csv_content == ['']:
+                csv_content = []
+        else:
+            csv_content = []
+            
+        request = None
+        if self.history.get(filename, None) is not None and self.history[filename].get('request', None) is not None:
+            request = self.history[filename]['request']
         
-        infos = []        
-        for line in all_results:
+        self.add_to_history(filename, request, csv_content)
+
+        frame_results = []
+        for line in csv_content:
             line = line.split(',')
             format = line[0]
             frame_number = int(line[1])
@@ -202,17 +207,23 @@ class RetrievalEngine:
             
             frm_id = self.get_id_from_frm_number(batch_key, video_key, frame_number)
             
-            if query_type == 'qa':
+            if 'qa' in filename:
                 answer = line[2]
             
             info = self.map_info(frm_id, answer)
-            infos.append(info)
+            frame_results.append(info)
+                
+        infos = {
+            'request': request,
+            'results': frame_results,
+            'query': self.queries.get(filename, None)
+        }
         
         return infos
     
     def get_output_by_timeframe(self, batch, video, timeframe: str):
         fps = self.all_video_info[batch][video]['fps']
-        timeframe = timeframe.split(':')
+        timeframe = timeframe.split('_')
         frm_number = (int(timeframe[0]) * 60 + int(timeframe[1])) * int(fps)
         return f'{batch}_{video}, {frm_number}'
     
@@ -249,6 +260,9 @@ class RetrievalEngine:
 
         return result_paths
     
+    def upload_queries(self, queries):
+        self.queries = queries
+        return "Upload sucessfully"
     
     def get_tag_assistant(self, query: str, num_tags: int):
         query = self.translator(query)

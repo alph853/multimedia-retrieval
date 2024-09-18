@@ -51,7 +51,7 @@ class Query(BaseModel):
 class GetAssistant(BaseModel):
     type: str
     query: str | List[str]
-    num_tags: int = 15
+    num_tags: int = 50
     
     
 class HistoryQuery(BaseModel):
@@ -120,13 +120,13 @@ async def check_ocr(frame_id: int):
 async def get_frame_info(batch_key, frame_key,file_name):
     return retrieval_engine.get_frame_info(batch_key, frame_key, file_name)
     
-@app.get("/get_output_by_timeframe/{batch_key}/{frame_key}/{timeframe}")
+@app.get("/get_output_by_timeframe/{batch_key}/{video_key}/{timeframe}")
 async def get_output_by_timeframe(batch_key, video_key, timeframe):
     return retrieval_engine.get_output_by_timeframe(batch_key, video_key, timeframe)    
 
-@app.get("/get_history/{question_number}")
-async def get_history_result_by_question(question_number: int):
-    return retrieval_engine.get_history_result_by_question(question_number=question_number)
+@app.get("/get_history/{filename}")
+async def get_history_result_by_question(filename: str):
+    return retrieval_engine.get_history_result_by_question(filename=filename)
 
 @app.post("/add_history")
 async def add_to_history(history: HistoryQuery):
@@ -135,3 +135,7 @@ async def add_to_history(history: HistoryQuery):
 @app.get("/get_history")
 async def get_history():
     return retrieval_engine.get_history()
+
+@app.get("/upload_queries")
+async def upload_queries(queries: Dict[str, str]):
+    return retrieval_engine.upload_queries(queries)
