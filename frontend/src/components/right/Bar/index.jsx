@@ -3,6 +3,7 @@ import classes from "./styles.module.css"
 import { GlobalContext } from "../../../context"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import axios from "axios"
 
 export default function Bar(){
     const [inputValue, setInputValue ] = useState("")
@@ -21,7 +22,7 @@ export default function Bar(){
             if(image.answer) csvRows.push(`${column1},${column2},${image.answer}`)
           }
         })
-
+        console.log(csvRows)
         const csvString = csvRows.join("\n")
         const blob = new Blob([csvString], { type: "text/csv" })
         const url = URL.createObjectURL(blob)
@@ -31,6 +32,13 @@ export default function Bar(){
         link.click()
         URL.revokeObjectURL(url)
         toast.dark("File csv downloaded")
+        axios.post("https://shrew-useful-unduly.ngrok-free.app/history",{
+          "frame_info":{
+            //Put frame info in inputBox => selectBtn is the selected frame
+          },
+          "filename": fileName,
+          "csv_content": csvRows
+        })
     }
     function handleImage() {
         searchResponse[selectBtn].splice(inputValue - 1, 0, ...imageQueue[selectBtn]);
