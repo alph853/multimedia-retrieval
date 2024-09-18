@@ -139,3 +139,11 @@ height: 100px;
   font-size: 30px;
   cursor: pointer;
 }
+
+.title{
+  cursor: pointer;
+}
+
+.title:hover{
+  color: green;
+}

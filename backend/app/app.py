@@ -117,7 +117,7 @@ async def check_ocr(frame_id: int):
     return OCR[frame_id]
 
 @app.get("/get_frame_info/{batch_key}/{frame_key}/{file_name}")
-async def get_frame_info(batch_key, frame_key, file_name):
+async def get_frame_info(batch_key, frame_key,file_name):
     return retrieval_engine.get_frame_info(batch_key, frame_key, file_name)
     
 @app.get("/get_output_by_timeframe/{batch_key}/{frame_key}/{timeframe}")

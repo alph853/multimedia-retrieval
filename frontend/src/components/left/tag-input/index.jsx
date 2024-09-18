@@ -8,8 +8,7 @@ export default function TagInput({ id }) {
   const tagTrie = trie(tag);
   const [activeSearch, setActiveSearch] = useState(tag.slice(0, 50));
 
-  const {removeInput, selectTag, setSelectTag, setInputBox, selectedFrame} = useContext(GlobalContext);
-
+  const {removeInput, selectTag, setSelectTag, setInputBox, selectedFrame, setTagAssistant, tagAssistant} = useContext(GlobalContext);
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -91,6 +90,9 @@ export default function TagInput({ id }) {
           />
           <div className={classes.bottomDetails}>
             <ul>
+              {tagAssistant[selectedFrame]?.map((tag) => (
+                <li key={tag} onClick={() => {handleClick(tag)}}>{tag}</li>
+              ))}
             </ul>
           </div>
         </div>

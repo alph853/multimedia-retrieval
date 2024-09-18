@@ -3,14 +3,13 @@ import { GlobalContext } from "../../../context";
 import classes from './styles.module.css';
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { FaRegCircleXmark } from "react-icons/fa6";
+import axios from "axios"
 
 export default function ImageSlider() {
-  const { images, selectedImage, setSelectedImage, searchResponse, selectBtn, allKeyFrame} = useContext(GlobalContext);
+  const { images, selectedImage, setSelectedImage, searchResponse, selectBtn, allKeyFrame, setSearchResponse} = useContext(GlobalContext);
   const [,LX, VX, ] = searchResponse[selectBtn][selectedImage]['scene_id'].split('/');
 
   const arrayScroll = allKeyFrame[LX][VX].sort()
-  console.log(arrayScroll)
-  console.log(searchResponse[selectBtn][selectedImage]['img_path'])
   const [select, setSelect] = useState(arrayScroll.indexOf(searchResponse[selectBtn][selectedImage]['img_path'].slice(1)))
 
   function handleImageClick(id) {
@@ -50,13 +49,25 @@ export default function ImageSlider() {
     };
   }, [select, arrayScroll.length]);
 
+  const handleAddFrame = () => {
+    const frameId = arrayScroll[select].split('.')[0]
+    const updatedRespone = {...searchResponse};
+    axios.get(`http://127.0.0.1:8000/get_frame_info/${frameId}`)
+      .then(respone => {
+        updatedRespone[selectBtn].unshift(respone.data);
+        setSearchResponse(updatedRespone);
+        setSelectedImage(selectedImage + 1)
+      })
+      .catch(error => console.log(error))
+  }
+
 
 
   return (
     <div className={classes.slider_container}>
       <div className={classes.data_container}>
         <div className={classes.image_left}>
-          <p>{arrayScroll[select]}</p>
+          <p onClick={handleAddFrame} className={classes.title}>{arrayScroll[select]}</p>
           <div>
             <img src={`./public/images/${arrayScroll[select]}`} style={{height: "500px"}}/>
           </div>

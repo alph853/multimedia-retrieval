@@ -21,6 +21,7 @@ export default function GlobalState({ children }) {
       },
     },
   ])
+  const [tagAssistant, setTagAssistant] = useState([])
   const [searchResponse, setSearchResponse] = useState({
     all: [
       {
@@ -87,7 +88,7 @@ export default function GlobalState({ children }) {
   function handleClick(event) {
     const value = event.currentTarget.getAttribute("data-value")
     if (
-      inputBox[selectedFrame].render.findIndex((item) => item === value) === -1
+      inputBox[selectedFrame].render.findIndex((item) => item === value) === -1 
     ) {
       const newInputBox = [...inputBox]
       const newFrameArray = [...newInputBox[selectedFrame].render]
@@ -96,7 +97,7 @@ export default function GlobalState({ children }) {
       setInputBox((p) => (p = newInputBox))
       console.log(inputBox)
     } else {
-      alert("Only one for each frame")
+      if (value != "tag") alert("Only one for each frame")
     }
     console.log(inputBox)
   }
@@ -150,6 +151,8 @@ export default function GlobalState({ children }) {
         allKeyFrame,
         fileName,
         setFileName,
+        tagAssistant, 
+        setTagAssistant,
       }}
     >
       {children}

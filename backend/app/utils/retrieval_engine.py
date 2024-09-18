@@ -102,13 +102,16 @@ class RetrievalEngine:
             # Handle the case where filename is not found
             return -1
         
-        frame_id = 0
+        index_filename = self.all_video_info[batch][video]["files"][index_filename]
+        
+        idx_frm = 0;
         for batch_key in sorted(self.all_video_info.keys()):
             for video_key in sorted(self.all_video_info[batch_key].keys()):
                 if batch_key == batch and video_key == video:
-                    frame_id += index_filename
-                    return frame_id
-                frame_id += len(all_filename)
+                    idx_frm += index_filename
+                    return idx_frm
+                idx_frm += (self.all_video_info[batch_key][video_key]["files"][-1] + 1 )
+                
         return -1
     
     def get_id_from_frm_number(self, batch, video, frm_number):
@@ -135,7 +138,7 @@ class RetrievalEngine:
                 if batch_key == batch and video_key == video:
                     frame_id += index_frm_number
                     return frame_id
-                frame_id += len(all_frame_numbers)
+                frame_id += len(self.all_video_info[batch_key][video_key]['frm_numbers'])
         return -1
         
     def get_frame_info(self, batch, video, filename):
