@@ -7,6 +7,7 @@ export default function GlobalState({ children }) {
   const [images, setImages] = useState([])
   const [selector,setSelector] = useState(true)
   const [files, setFiles] = useState([])
+  const [uploadFiles,setUploadFiles] = useState({})
   const [selectBtn, setSelectBtn] = useState(null)
   const [inputBox, setInputBox] = useState([
     {
@@ -148,6 +149,8 @@ export default function GlobalState({ children }) {
         setSelectBtn,
         fileName,
         setFileName,
+        uploadFiles,
+        setUploadFiles,
       }}
     >
       {children}
