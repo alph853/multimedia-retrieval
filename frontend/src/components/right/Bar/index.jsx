@@ -8,6 +8,8 @@ import axios from "axios"
 export default function Bar(){
     const [inputValue, setInputValue ] = useState("")
     const [inputFilter, setInputFilter ] = useState("")
+    const [rows,setRows] = useState("")
+    const [editOpen,setEditOpen] = useState(false); 
     const {numImg,fileName,setFileName,images, setImages ,imageQueue, setImageQueue, checkFilter, setCheckFilter, imagesTemp, setImageTemp,selector,setSelector, searchResponse, setSearchResponse, selectBtn, setSelectBtn,inputBox} = useContext(GlobalContext)
     function handleSubmitCsv(){
         const csvRows = []
@@ -22,57 +24,9 @@ export default function Bar(){
             if(image.answer) csvRows.push(`${column1},${column2},${image.answer}`)
           }
         })
-        console.log(csvRows)
         const csvString = csvRows.join("\n")
-        const blob = new Blob([csvString], { type: "text/csv" })
-        const url = URL.createObjectURL(blob)
-        const link = document.createElement("a")
-        link.href = url
-        link.download = fileName==""?"output.csv":`${fileName}.csv`
-        link.click()
-        URL.revokeObjectURL(url)
-        toast.dark("File csv downloaded")
-        const obj = {}
-        inputBox.forEach((input, index) => {
-          const key = (index + 1).toString()
-          const { text, img_path, drawImg, tag, ocr } = input.data
-          obj[key] = {
-            txt: text,
-            img: img_path.length > 0 ? img_path : null,
-            ocr: ocr == "" ? null : ocr,
-            idx: null,
-            tag: tag ? tag : null,
-            asr: null,
-            obj: drawImg?.length
-              ? {
-                  canvasSize: { h: canvasH, w: canvasW },
-                  dragObject: drawImg.map((obj) => ({
-                    class: obj.imageName,
-                    position: {
-                      xTop: obj.x,
-                      xBottom: obj.x + obj.width,
-                      yTop: obj.y,
-                      yBottom: obj.y + obj.height,
-                    },
-                  })),
-                  drawColor: [],
-                }
-              : null,
-          }
-        })
-
-        axios.post("https://shrew-useful-unduly.ngrok-free.app/add_history", {
-          request: {
-            number: numImg,
-            search_space_idx: [],
-            number_of_frames: inputBox.length,
-            frame_info: obj,
-          },
-          filename: fileName,
-          csv_content: csvRows,
-        })
-        .then(res=>console.log(res))
-        .catch(err=>console.log(err.message));
+        setRows(csvString);
+        setEditOpen(true);
     }
     function handleImage() {
         searchResponse[selectBtn].splice(inputValue - 1, 0, ...imageQueue[selectBtn]);
@@ -105,6 +59,60 @@ export default function Bar(){
     function noFilter(){
         setCheckFilter(false)
         setImageTemp(searchResponse[selectBtn])
+    }
+    function handleFile(){
+      const blob = new Blob([rows], { type: "text/csv" })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement("a")
+      link.href = url
+      link.download = fileName == "" ? "output.csv" : `${fileName}.csv`
+      link.click()
+      URL.revokeObjectURL(url)
+      toast.dark("File csv downloaded")
+      setEditOpen(false)
+      const obj = {}
+      inputBox.forEach((input, index) => {
+        const key = (index + 1).toString()
+        const { text, img_path, drawImg, tag, ocr } = input.data
+        obj[key] = {
+          txt: text,
+          img: img_path.length > 0 ? img_path : null,
+          ocr: ocr == "" ? null : ocr,
+          idx: null,
+          tag: tag ? tag : null,
+          asr: null,
+          obj: drawImg?.length
+            ? {
+                canvasSize: { h: canvasH, w: canvasW },
+                dragObject: drawImg.map((obj) => ({
+                  class: obj.imageName,
+                  position: {
+                    xTop: obj.x,
+                    xBottom: obj.x + obj.width,
+                    yTop: obj.y,
+                    yBottom: obj.y + obj.height,
+                  },
+                })),
+                drawColor: [],
+              }
+            : null,
+        }
+      })
+
+      axios
+        .post("https://promoted-strictly-narwhal.ngrok-free.app/add_history", {
+          request: {
+            number: numImg,
+            search_space_idx: [],
+            number_of_frames: inputBox.length,
+            frame_info: obj,
+          },
+          filename: fileName,
+          csv_content: csvRows,
+        })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err.message))
+        
     }
     return (
       <div className={classes.bar}>
@@ -156,6 +164,13 @@ export default function Bar(){
             Submit
           </button>
         </div>
+        {editOpen && <div className={classes.modalContainer}>
+          <textarea 
+            value={rows}
+            onChange={(e)=>setRows(e.target.value)}
+          />
+          <button onClick={handleFile}>Edit</button>
+          </div>}
       </div>
     )
 }

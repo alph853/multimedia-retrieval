@@ -6,13 +6,14 @@ import Notification from "../../components/notification"
 import CsvDropDown from "./csv_dropdown"
 
 export default function History() {
-  const [historyResponse, setHistoryResponse] = useState({})
+  const [historyResponse, setHistoryResponse] = useState([])
   const [test, setTest] = useState(["query-1-kis", "query-2-qa"])
   const [currentFileRes, setCurrentFileRes] = useState({
     request: null,
     results: [
       {
-        img_path: "L01/V0001/0007.webp",
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
         scene_id: "/L01/V001/2",
         frm_number: 7,
         format: "L01_V001, 229",
@@ -22,7 +23,8 @@ export default function History() {
         answer: "244550",
       },
       {
-        img_path: "L01/V0001/0007.webp",
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
         scene_id: "/L01/V001/2",
         frm_number: 7,
         format: "L01_V001, 229",
@@ -32,7 +34,8 @@ export default function History() {
         answer: "244550",
       },
       {
-        img_path: "L01/V0001/0007.webp",
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
         scene_id: "/L01/V001/2",
         frm_number: 7,
         format: "L01_V001, 229",
@@ -42,7 +45,8 @@ export default function History() {
         answer: "244550",
       },
       {
-        img_path: "L01/V0001/0007.webp",
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
         scene_id: "/L01/V001/2",
         frm_number: 7,
         format: "L01_V001, 229",
@@ -52,7 +56,8 @@ export default function History() {
         answer: "244550",
       },
       {
-        img_path: "L01/V0001/0007.webp",
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
         scene_id: "/L01/V001/2",
         frm_number: 7,
         format: "L01_V001, 229",
@@ -62,7 +67,184 @@ export default function History() {
         answer: "244550",
       },
       {
-        img_path: "L01/V0001/0007.webp",
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
+        scene_id: "/L01/V001/2",
+        frm_number: 7,
+        format: "L01_V001, 229",
+        timeframe: 9,
+        publish_date: "31/10/2023",
+        watch_url: "https://youtube.com/watch?v=1yHIy8dYh...",
+        answer: "244550",
+      },
+      {
+        img_path:
+          "https://i.pinimg.com/736x/53/fb/f4/53fbf4e08a0116cbb0200a61c08f15e6.jpg",
         scene_id: "/L01/V001/2",
         frm_number: 7,
         format: "L01_V001, 229",
@@ -78,11 +260,12 @@ export default function History() {
 
   useEffect(() => {
     axios
-      .get("https://promoted-strictly-narwhal.ngrok-free.app/get_history")
+      .post("https://promoted-strictly-narwhal.ngrok-free.app/get_history")
       .then((res) => {
         console.log(res)
-        setHistoryResponse(JSON.parse(res.data))
+        
         console.log("History data: ", res.data)
+        setHistoryResponse(res.data)
         // toast.success("Get history completed");
       })
       .catch((err) => {
@@ -93,10 +276,10 @@ export default function History() {
 
   function handleSubmitQuery(el) {
     axios
-      .get(`https://promoted-strictly-narwhal.ngrok-free.app/${el}`)
+      .post(`https://promoted-strictly-narwhal.ngrok-free.app/get_history/${el}`)
       .then((res) => {
         console.log(res)
-        setCurrentFileRes(JSON.parse(res.data))
+        setCurrentFileRes(res.data)
       })
       .catch((err) => {
         console.log(err.message)
@@ -109,7 +292,7 @@ export default function History() {
         <div className={classes.historyLeft}>
           <p style={{ fontSize: "20px" }}>File results</p>
           <ul>
-            {test.map((el) => (
+            {historyResponse?.map((el) => (
               <li key={el} onClick={() => handleSubmitQuery(el)}>
                 {el}
               </li>
@@ -124,9 +307,21 @@ export default function History() {
             </span>
             {currentFileRes.query}
           </p>
+          <br />
           {currentFileRes.results?.length > 0 && (
             <CsvDropDown contents={currentFileRes.results} />
           )}
+          <div className={classes.imageContainer}>
+            {currentFileRes.results.map((res) => (
+              <div className={classes.imG}>
+                <img src={res.img_path} alt={res.img_path}/>
+                <p>{res.format}</p>
+                {
+                  res.answer === ""?null:<input value={res.answer} />
+                }
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

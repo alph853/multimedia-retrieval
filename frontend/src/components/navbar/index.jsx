@@ -35,7 +35,7 @@ export default function Navbar() {
   useEffect(()=>{
     console.log(uploadFiles)
     if(Object.keys(uploadFiles).length!==0){
-      axios.get("https://promoted-strictly-narwhal.ngrok-free.app/upload_queries",uploadFiles)
+      axios.post("https://promoted-strictly-narwhal.ngrok-free.app/upload_queries",uploadFiles)
       .then(res=>{
         console.log(res.data);
       })
