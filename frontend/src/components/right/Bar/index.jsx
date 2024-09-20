@@ -101,20 +101,22 @@ export default function Bar(){
             : null,
         }
       })
-
+      const rq = {
+        request: {
+          number: numImg,
+          search_space_idx: [],
+          number_of_frames: inputBox.length,
+          frame_info: obj,
+        },
+        filename: fileName,
+        csv_content: content,
+      }
+      console.log(rq);
+      
       axios
         .post(
           "https://amazed-seasnail-uniformly.ngrok-free.app/add_history",
-          {
-            request: {
-              number: numImg,
-              search_space_idx: [],
-              number_of_frames: inputBox.length,
-              frame_info: obj,
-            },
-            filename: fileName,
-            csv_content: content,
-          }
+          rq
         )
         .then((res) => console.log(res))
         .catch((err) => console.log(err.message))
