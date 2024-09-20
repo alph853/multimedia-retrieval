@@ -276,12 +276,10 @@ export default function History() {
 
   function handleSubmitQuery(el) {
     axios
-      .get(
+      .post(
         `https://amazed-seasnail-uniformly.ngrok-free.app/history?filename=${el}`,
         {
-          headers: {
-            Accept: "application/json",
-          },
+          request: {}
         }
       )
       .then((res) => {
