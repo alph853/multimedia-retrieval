@@ -13,7 +13,7 @@ export default function Right() {
       <Bar></Bar>
       {
         <ul style={{display: "flex"}} className={classes.ulbtn}>
-          {Object.keys(searchResponse).map(key => (<div className={(selectBtn == key) ? `${classes.btn} ${classes.selected}` : `${classes.btn}`} onClick={() => setSelectBtn(key)}>{key}</div>))}
+          {Object.keys(searchResponse).map(key => (<div className={(selectBtn == key) ? `${classes.btn} ${classes.selected}` : `${classes.btn}`} onClick={() => {setSelectBtn(key);}}>{key}</div>))}
         </ul>
       }
       <hr></hr>
