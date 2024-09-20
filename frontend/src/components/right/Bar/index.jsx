@@ -103,16 +103,19 @@ export default function Bar(){
       })
 
       axios
-        .get("https://promoted-strictly-narwhal.ngrok-free.app/add_history", {
-          request: {
-            number: numImg,
-            search_space_idx: [],
-            number_of_frames: inputBox.length,
-            frame_info: obj,
-          },
-          filename: fileName,
-          csv_content: content,
-        })
+        .post(
+          "https://amazed-seasnail-uniformly.ngrok-free.app/add_history",
+          {
+            request: {
+              number: numImg,
+              search_space_idx: [],
+              number_of_frames: inputBox.length,
+              frame_info: obj,
+            },
+            filename: fileName,
+            csv_content: content,
+          }
+        )
         .then((res) => console.log(res))
         .catch((err) => console.log(err.message))
         

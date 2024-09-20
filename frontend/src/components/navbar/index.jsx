@@ -35,13 +35,17 @@ export default function Navbar() {
   useEffect(()=>{
     console.log(uploadFiles)
     if(Object.keys(uploadFiles).length!==0){
-      axios.post("https://promoted-strictly-narwhal.ngrok-free.app/upload_queries",uploadFiles)
-      .then(res=>{
-        console.log(res.data);
-      })
-      .catch(err=>{
-        console.log(err.message)
-      })
+      axios
+        .post(
+          "https://amazed-seasnail-uniformly.ngrok-free.app/upload_queries",
+          uploadFiles
+        )
+        .then((res) => {
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err.message)
+        })
     }
   },[uploadFiles])
   return (

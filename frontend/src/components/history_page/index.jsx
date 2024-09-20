@@ -260,10 +260,10 @@ export default function History() {
 
   useEffect(() => {
     axios
-      .post("https://promoted-strictly-narwhal.ngrok-free.app/get_history")
+      .post("https://amazed-seasnail-uniformly.ngrok-free.app/get_history")
       .then((res) => {
         console.log(res)
-        
+
         console.log("History data: ", res.data)
         setHistoryResponse(res.data)
         // toast.success("Get history completed");
@@ -276,8 +276,13 @@ export default function History() {
 
   function handleSubmitQuery(el) {
     axios
-      .post(
-        `https://promoted-strictly-narwhal.ngrok-free.app/history/${el}`
+      .get(
+        `https://amazed-seasnail-uniformly.ngrok-free.app/history?filename=${el}`,
+        {
+          headers: {
+            Accept: "application/json",
+          },
+        }
       )
       .then((res) => {
         console.log(res)

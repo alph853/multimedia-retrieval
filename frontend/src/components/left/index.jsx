@@ -78,7 +78,7 @@ export default function Left() {
     console.log(obj)
 
     axios
-      .post("https://promoted-strictly-narwhal.ngrok-free.app/search", {
+      .post("https://amazed-seasnail-uniformly.ngrok-free.app/search", {
         number: numImg,
         search_space_idx: [],
         number_of_frames: inputBox.length,
