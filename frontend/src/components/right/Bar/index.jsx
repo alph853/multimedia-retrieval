@@ -9,7 +9,9 @@ export default function Bar(){
     const [inputValue, setInputValue ] = useState("")
     const [inputFilter, setInputFilter ] = useState("")
     const [rows,setRows] = useState("")
+    const [content,setContent] = useState([])
     const [editOpen,setEditOpen] = useState(false); 
+
     const {numImg,fileName,setFileName,images, setImages ,imageQueue, setImageQueue, checkFilter, setCheckFilter, imagesTemp, setImageTemp,selector,setSelector, searchResponse, setSearchResponse, selectBtn, setSelectBtn,inputBox} = useContext(GlobalContext)
     function handleSubmitCsv(){
         const csvRows = []
@@ -24,6 +26,7 @@ export default function Bar(){
             if(image.answer) csvRows.push(`${column1},${column2},${image.answer}`)
           }
         })
+        setContent(csvRows);
         const csvString = csvRows.join("\n")
         setRows(csvString);
         setEditOpen(true);
@@ -100,7 +103,7 @@ export default function Bar(){
       })
 
       axios
-        .post("https://promoted-strictly-narwhal.ngrok-free.app/add_history", {
+        .get("https://promoted-strictly-narwhal.ngrok-free.app/add_history", {
           request: {
             number: numImg,
             search_space_idx: [],
@@ -108,7 +111,7 @@ export default function Bar(){
             frame_info: obj,
           },
           filename: fileName,
-          csv_content: csvRows,
+          csv_content: content,
         })
         .then((res) => console.log(res))
         .catch((err) => console.log(err.message))

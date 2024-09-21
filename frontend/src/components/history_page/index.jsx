@@ -260,7 +260,7 @@ export default function History() {
 
   useEffect(() => {
     axios
-      .post("https://promoted-strictly-narwhal.ngrok-free.app/get_history")
+      .post("https://localhost:8000/get_history")
       .then((res) => {
         console.log(res)
         
@@ -276,7 +276,7 @@ export default function History() {
 
   function handleSubmitQuery(el) {
     axios
-      .post(`https://promoted-strictly-narwhal.ngrok-free.app/get_history/${el}`)
+      .post(`https://localhost:8000/history/${el}`)
       .then((res) => {
         console.log(res)
         setCurrentFileRes(res.data)
@@ -312,7 +312,7 @@ export default function History() {
             <CsvDropDown contents={currentFileRes.results} />
           )}
           <div className={classes.imageContainer}>
-            {currentFileRes.results.map((res) => (
+            {currentFileRes.results?.map((res) => (
               <div className={classes.imG}>
                 <img src={res.img_path} alt={res.img_path}/>
                 <p>{res.format}</p>
