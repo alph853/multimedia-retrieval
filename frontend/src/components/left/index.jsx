@@ -38,8 +38,7 @@ export default function Left() {
     setNumImg,
     canvasW,
     canvasH,
-    setImages,
-    images,
+    url
   } = useContext(GlobalContext)
   function handleDeleteFrame() {
     setInputBox((i) => (i = inputBox.filter((_, idx) => idx !== selectedFrame)))
@@ -78,7 +77,7 @@ export default function Left() {
     console.log(obj)
 
     axios
-      .post("https://amazed-seasnail-uniformly.ngrok-free.app/search", {
+      .post(`${url}/search`, {
         number: numImg,
         search_space_idx: [],
         number_of_frames: inputBox.length,

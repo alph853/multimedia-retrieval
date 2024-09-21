@@ -7,7 +7,7 @@ import axios from "axios"
 
 export default function Navbar() {
   const navigate = useNavigate()
-  const { uploadFiles, setUploadFiles } = useContext(GlobalContext)
+  const { uploadFiles, setUploadFiles,url } = useContext(GlobalContext)
 
   const readFile = (file) => {
     return new Promise((resolve) => {
@@ -37,7 +37,7 @@ export default function Navbar() {
     if(Object.keys(uploadFiles).length!==0){
       axios
         .post(
-          "https://amazed-seasnail-uniformly.ngrok-free.app/upload_queries",
+          `${url}/upload_queries`,
           uploadFiles
         )
         .then((res) => {

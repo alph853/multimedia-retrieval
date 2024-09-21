@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import classes from "./styles.module.css"
 import axios from "axios"
 import { toast } from "react-toastify"
 import Notification from "../../components/notification"
 import CsvDropDown from "./csv_dropdown"
+import { GlobalContext } from "../../context"
 
 export default function History() {
+  const {url} = useContext(GlobalContext)
   const [historyResponse, setHistoryResponse] = useState([])
   const [currentFileRes, setCurrentFileRes] = useState({
     request: null,
@@ -15,7 +17,7 @@ export default function History() {
 
   useEffect(() => {
     axios
-      .post("https://amazed-seasnail-uniformly.ngrok-free.app/get_history")
+      .post(`${url}/get_history`)
       .then((res) => {
         console.log("History data: ", res.data)
         setHistoryResponse(res.data)
@@ -27,10 +29,7 @@ export default function History() {
 
   function handleSubmitQuery(el) {
     axios
-      .post(
-        `https://amazed-seasnail-uniformly.ngrok-free.app/history?filename=${el}`,
-        { request: {} }
-      )
+      .post(`${url}/history?filename=${el}`, { request: {} })
       .then((res) => {
         console.log(res.data)
         setCurrentFileRes(res.data) // Assuming you want to set this to state

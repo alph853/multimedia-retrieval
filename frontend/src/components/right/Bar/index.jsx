@@ -115,7 +115,7 @@ export default function Bar(){
       
       axios
         .post(
-          "https://amazed-seasnail-uniformly.ngrok-free.app/add_history",
+          `${url}/add_history`,
           rq
         )
         .then((res) => console.log(res))
