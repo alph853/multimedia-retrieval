@@ -20,7 +20,7 @@ export default function TextInput({id}){
     })
   }
   const handleTagAssistant = e => {
-    axios.post("http://127.0.0.1:8000/assistant",{
+    axios.post("https://amazed-seasnail-uniformly.ngrok-free.app/assistant",{
         "type": "tag",
         "query": inputBox[selectedFrame].data.text,
     })

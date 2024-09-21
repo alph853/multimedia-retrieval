@@ -10,7 +10,7 @@ export default function ImageSlider() {
   const [,LX, VX, ] = searchResponse[selectBtn][selectedImage]['scene_id'].split('/');
 
   const arrayScroll = allKeyFrame[LX][VX].sort()
-  const [select, setSelect] = useState(arrayScroll.indexOf(searchResponse[selectBtn][selectedImage]['img_path'].slice(1)))
+  const [select, setSelect] = useState(arrayScroll.indexOf(searchResponse[selectBtn][selectedImage]['img_path']))
 
   function handleImageClick(id) {
     setSelect(id);
@@ -52,8 +52,10 @@ export default function ImageSlider() {
   const handleAddFrame = () => {
     const frameId = arrayScroll[select].split('.')[0]
     const updatedRespone = {...searchResponse};
-    axios.get(`http://127.0.0.1:8000/get_frame_info/${frameId}`)
+    axios.get(`https://amazed-seasnail-uniformly.ngrok-free.app/get_frame_info/${frameId}`)
       .then(respone => {
+        console.log(frameId)
+        console.log(respone.data)
         updatedRespone[selectBtn].unshift(respone.data);
         setSearchResponse(updatedRespone);
         setSelectedImage(selectedImage + 1)
