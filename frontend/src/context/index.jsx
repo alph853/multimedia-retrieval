@@ -10,6 +10,7 @@ export default function GlobalState({ children }) {
   const [files, setFiles] = useState([])
   const [uploadFiles,setUploadFiles] = useState({})
   const [selectBtn, setSelectBtn] = useState(null)
+  const url = "https://amazed-seasnail-uniformly.ngrok-free.app";
   const [inputBox, setInputBox] = useState([
     {
       render: ["text"],
@@ -119,6 +120,7 @@ export default function GlobalState({ children }) {
         setImages,
         inputBox,
         setInputBox,
+        url,
         handleClick,
         removeInput,
         closeBoard,
