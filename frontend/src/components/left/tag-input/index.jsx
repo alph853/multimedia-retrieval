@@ -90,9 +90,9 @@ export default function TagInput({ id }) {
           />
           <div className={classes.bottomDetails}>
             <ul>
-              {tagAssistant[selectedFrame]?.map((tag) => (
+              {(tagAssistant[selectedFrame]) && (tagAssistant[selectedFrame]?.map((tag) => (
                 <li key={tag} onClick={() => {handleClick(tag)}}>{tag}</li>
-              ))}
+              )))}
             </ul>
           </div>
         </div>

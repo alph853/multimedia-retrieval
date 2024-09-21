@@ -1,7 +1,7 @@
 import bisect
 import copy
 import os
-
+import aiofiles
 import json
 
 import numpy as np
@@ -67,7 +67,11 @@ class RetrievalEngine:
         self.translator = translator
         
         self.history = {}
-        self.queries = {}
+        
+        if os.path.exists(os.path.join(PROJECT_ROOT, 'utils/history/uploaded_queries.json')):
+            self.queries = json.load(open(os.path.join(PROJECT_ROOT, 'utils/history/uploaded_queries.json'), 'r', encoding='utf-8'))
+        else: 
+            self.queries = {}
 
     def __call__(self, frame_number: int, frame_info: dict, k: int):
         query, query_info = frame_info_to_query(self.features, frame_info)
@@ -141,7 +145,7 @@ class RetrievalEngine:
     
     def map_info(self, frm_id, answer=""):
         info = self.id2img_fps[int(frm_id)]
-        info['frm_id'] = frm_id
+        info['frm_id'] = str(frm_id)
 
         video_key = info['scene_id'].split('/')
         batch_key = video_key[1]
@@ -151,10 +155,12 @@ class RetrievalEngine:
 
         timeframe = int(info['frm_number']) // int(fps)
         info['format'] = format
-        info['timeframe'] = timeframe
+        # info['timeframe'] = timeframe
         info['publish_date'] = self.all_video_info[batch_key][video_key]['publish_date']
         info['watch_url'] = self.all_video_info[batch_key][video_key]['watch_url'] + f'&t={timeframe}s'
-        info['answer'] = answer
+        info['answer'] = str(answer)
+        
+        info = json.dumps(info, indent=2, default=custom_serializer)
         
         return info
     
@@ -168,6 +174,7 @@ class RetrievalEngine:
             if csv_content and len(csv_content[0].split(',')) == 2:
                 return "Invalid csv content"    
         
+        request = None
         self.history[filename] = {
             'request': request,
         }
@@ -209,8 +216,14 @@ class RetrievalEngine:
             
             if 'qa' in filename:
                 answer = line[2]
+            else:
+                answer = ""
             
             info = self.map_info(frm_id, answer)
+            # print('abc')
+            # print(info)
+            # print('def')
+            
             frame_results.append(info)
                 
         infos = {
@@ -218,6 +231,8 @@ class RetrievalEngine:
             'results': frame_results,
             'query': self.queries.get(filename, None)
         }
+        
+        # print(json.dumps(infos, indent=2, ensure_ascii=False))
         
         return infos
     
@@ -255,13 +270,16 @@ class RetrievalEngine:
             result_paths[frame_id] = infos_query
 
         result_paths = json.dumps(result_paths, indent=2, default=custom_serializer)
-        with open(os.path.join(PROJECT_ROOT, 'result.json'), 'w') as f:
-            f.write(result_paths)
+        # with open(os.path.join(PROJECT_ROOT, 'result.json'), 'w') as f:
+        #     f.write(result_paths)
 
         return result_paths
     
     def upload_queries(self, queries):
         self.queries = queries
+        with open(os.path.join(PROJECT_ROOT, 'utils/history/uploaded_queries.json'), 'w') as f:    
+            json.dump(queries, f, indent=2)
+            
         return "Upload sucessfully"
     
     def get_tag_assistant(self, query: str, num_tags: int):

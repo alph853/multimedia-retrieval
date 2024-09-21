@@ -83,10 +83,9 @@ export default function Left() {
         search_space_idx: [],
         number_of_frames: inputBox.length,
         frame_info: obj,
-      }
-    ) 
+      })
       .then((res) => {
-        setSearchResponse((s) => JSON.parse(res.data))
+        setSearchResponse((s) => (s = JSON.parse(res.data)))
         toast.success("Search completed successfully!")
       })
       .catch((err) => {

@@ -124,18 +124,20 @@ async def get_frame_info(batch_key, frame_key,file_name):
 async def get_output_by_timeframe(batch_key, video_key, timeframe):
     return retrieval_engine.get_output_by_timeframe(batch_key, video_key, timeframe)    
 
-@app.get("/get_history/{filename}")
-async def get_history_result_by_question(filename: str):
+@app.post("/history")
+async def get_history_result_by_question(filename: str, request: Dict[Any, Any]):
+    print("FILENAME:" , filename)
+    # print("REQUEST:" , request)
     return retrieval_engine.get_history_result_by_question(filename=filename)
 
 @app.post("/add_history")
 async def add_to_history(history: HistoryQuery):
     return retrieval_engine.add_to_history(history.filename, history.request, history.csv_content)
     
-@app.get("/get_history")
+@app.post("/get_history")
 async def get_history():
     return retrieval_engine.get_history()
 
-@app.get("/upload_queries")
+@app.post("/upload_queries")
 async def upload_queries(queries: Dict[str, str]):
     return retrieval_engine.upload_queries(queries)

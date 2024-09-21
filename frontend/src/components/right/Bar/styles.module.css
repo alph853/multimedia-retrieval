@@ -45,3 +45,32 @@
     padding: 3px 10px;
     font-weight: 600;
 }
+.modalContainer{
+    position: absolute;
+    top:0;
+    left: 0;
+    z-index: 1000;
+    background: rgba(0,0,0,0.7);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+.modalContainer textarea{
+    color: black;
+    width: 300px;
+    height: 350px;
+    overflow: scroll;
+    overflow-x: hidden;
+    padding: 10px;
+    border-radius: 5px;
+}
+.modalContainer button{
+    background-color: white;
+    color: black;
+    border: none;
+    width: 300px;
+}
